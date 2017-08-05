@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.bumblebee.dao.BumblebeeDao">
+
+    <select id="queryAllAgent" resultType="BumblebeeAgent">
+        SELECT * FROM bumblebee_agent ORDER BY main_name,sub_name
+    </select>
+
+    <select id="queryAgent" resultType="BumblebeeAgent">
+        SELECT * FROM bumblebee_agent WHERE 1=1
+        <if test="agentIp !=null and agentIp !=''">
+            AND agent_ip = #{agentIp}
+        </if>
+        <if test="agentName !=null and agentName !=''">
+            AND agent_name = #{agentName}
+        </if>
+        <if test="asset !=null and asset !=''">
+            AND asset = #{asset}
+        </if>
+        <if test="manager !=null and manager !=''">
+            AND manager = #{manager}
+        </if>
+        <if test="mainName !=null and mainName !=''">
+            AND main_name = #{mainName}
+        </if>
+        <if test="subName !=null and subName !=''">
+            AND sub_name = #{subName}
+        </if>
+        ORDER BY main_name,sub_name
+    </select>
+
+
+    <select id="queryAgentByPermission"  resultType="BumblebeeAgent">
+        SELECT `agent_ip`,`agent_name`,`asset`,`manager`,`main_name`,`sub_name` FROM `bumblebee_agent` WHERE main_name IN
+        (
+          SELECT p.`main_name` FROM `group_permission` p WHERE
+          p.`group_id` =
+            (SELECT group_id FROM `bumblebee_user` u WHERE u.`email`=#{email})
+        )
+        <if test="agent.agentIp !=null and agent.agentIp !=''">
+            AND `agent_ip`= #{agent.agentIp}
+        </if>
+        <if test="agent.agentName !=null and agent.agentName !=''">
+            AND agent_name = #{agent.agentName}
+        </if>
+        <if test="agent.asset !=null and agent.asset !=''">
+            AND asset = #{agent.asset}
+        </if>
+        <if test="agent.manager !=null and agent.manager !=''">
+            AND manager = #{agent.manager}
+        </if>
+        <if test="agent.mainName !=null and agent.mainName !=''">
+            AND main_name = #{agent.mainName}
+        </if>
+        <if test="agent.subName !=null and agent.subName !=''">
+            AND sub_name = #{agent.subName}
+        </if>
+        ORDER BY main_name,sub_name
+    </select>
+
+    <select id ="queryUser" resultType="BumblebeeUser">
+        SELECT u.*,g.group_name FROM bumblebee_user u
+        LEFT JOIN bumblebee_group g
+        ON u.group_id = g.group_id
+        WHERE 1 =1
+            <if test="email !=null and email !=''">
+              AND u.email = #{email}
+            </if>
+            <if test="pwd !=null and pwd!=''">
+              AND u.pwd = #{pwd}
+            </if>
+        ORDER BY u.create_time
+    </select>
+
+    <select id ="queryUserById" resultType="BumblebeeUser" parameterType="int">
+        SELECT u.*,g.group_name FROM bumblebee_user u
+        LEFT JOIN bumblebee_group g
+        ON u.group_id = g.group_id
+        WHERE u.user_id =#{userId}
+    </select>
+
+    <insert id="addUser" parameterType="BumblebeeUser">
+        INSERT INTO bumblebee_user
+          (user_name,email,pwd,create_time,create_user,group_id,is_system)
+        VALUES
+          (#{userName},#{email},#{pwd},now(),#{createUser},#{groupId},#{isSystem})
+    </insert>
+
+    <update id="editUser" parameterType="BumblebeeUser">
+        UPDATE bumblebee_user
+        SET
+        user_name=#{userName},email=#{email},group_id=#{groupId}
+        WHERE user_id =#{userId}
+    </update>
+
+    <delete id="delUser" parameterType="int">
+      DELETE FROM bumblebee_user WHERE user_id=#{userId}
+    </delete>
+
+    <select id="queryAllGroup" resultType="BumblebeeGroup">
+        SELECT bg.*,gp.mainNameList FROM bumblebee_group  bg
+        LEFT JOIN
+        (SELECT group_id,GROUP_CONCAT(main_name) AS mainNameList FROM `group_permission` GROUP BY group_id) AS gp
+        ON
+        bg.`group_id`=gp.`group_id`
+        ORDER BY bg.create_time
+    </select>
+
+    <select id="queryGroupById" resultType="BumblebeeGroup">
+        SELECT * FROM bumblebee_group WHERE group_id =#{groupId}
+    </select>
+
+    <select id="queryGroupByName" resultType="BumblebeeGroup">
+        SELECT * FROM bumblebee_group WHERE group_name =#{groupName} LIMIT 1
+    </select>
+
+    <insert id="addGroup" useGeneratedKeys="true" keyProperty="groupId" parameterType="BumblebeeGroup">
+        INSERT INTO bumblebee_group
+          (`group_name`,`create_time`,`create_user`,`desc`)
+        VALUES
+          (#{groupName},now(),#{createUser},#{desc})
+    </insert>
+    <update id="editGroup"  parameterType="BumblebeeGroup">
+        UPDATE bumblebee_group SET `group_name`=#{groupName},`desc`=#{desc}
+        WHERE `group_id` =#{groupId}
+    </update>
+
+    <insert id="addGroupPermission">
+        INSERT INTO group_permission VALUES (#{groupId},#{mainName})
+    </insert>
+
+    <delete id="delGroupPermission" parameterType="int">
+        DELETE FROM group_permission WHERE group_id=#{groupId}
+    </delete>
+
+
+    <delete id="delGroup" parameterType="int">
+        DELETE FROM bumblebee_group WHERE group_id=#{groupId}
+    </delete>
+
+    <select id="queryLog" resultType="OperateLog">
+        SELECT * FROM operate_log ORDER BY start_time DESC
+    </select>
+
+    <insert id="addOperateLog" parameterType="OperateLog">
+        INSERT INTO operate_log(`ip`,`param`,`result`,`start_time`,`end_time`,`cost_time`,`operate_user`)
+        VALUES
+        (#{ip},#{param},#{result},#{startTime},#{endTime},#{costTime},#{operateUser})
+    </insert>
+
+    <update id="updateUserGroup" parameterType="int">
+        UPDATE bumblebee_user
+        SET group_id =NULL
+        WHERE group_id=#{groupId}
+    </update>
+
+    <select id="queryAllCommandBlacklist" resultType="CommandBlacklist">
+        SELECT * FROM command_blacklist
+        ORDER BY id
+    </select>
+    <select id="queryCommand" resultType="CommandBlacklist">
+        SELECT * FROM command_blacklist WHERE `command`=#{command} LIMIT 1
+    </select>
+
+    <delete id="delBlacklist" parameterType="int">
+        DELETE FROM command_blacklist WHERE `id`=#{id}
+    </delete>
+
+    <insert id="addBlacklist">
+        INSERT INTO command_blacklist(`command`) VALUES (#{command})
+    </insert>
+
+    <select id="queryMainNameList" resultType="string">
+        SELECT DISTINCT(main_name) FROM `bumblebee_agent`
+        WHERE main_name IS NOT NULL AND main_name !=''
+        <if test="email!=null and email !=''">
+            AND main_name IN(SELECT gp.`main_name` FROM `bumblebee_user` u
+            LEFT JOIN `group_permission` gp ON u.`group_id`= gp.`group_id`
+            WHERE u.`email` =#{email})
+        </if>
+        ORDER BY main_name
+    </select>
+    <select id="querySubNameList" resultType="string">
+        SELECT DISTINCT(sub_name) FROM `bumblebee_agent`
+        WHERE 1=1
+        <if test="mainName !=null and mainName !=''">
+            AND `main_name` =#{mainName}
+        </if>
+        AND sub_name IS NOT NULL AND sub_name !=''
+        ORDER BY sub_name
+    </select>
+    <select id="queryManagerList" resultType="string">
+       SELECT DISTINCT(manager) FROM `bumblebee_agent`
+       WHERE manager IS NOT NULL AND manager !=''
+        <if test="email!=null and email !=''">
+            AND main_name IN(SELECT gp.`main_name` FROM `bumblebee_user` u
+            LEFT JOIN `group_permission` gp ON u.`group_id`= gp.`group_id`
+            WHERE u.`email` =#{email})
+        </if>
+       ORDER BY manager
+    </select>
+
+    <update id="updateUserPwd" parameterType="BumblebeeUser">
+        UPDATE bumblebee_user SET `pwd` =#{pwd}
+        WHERE user_id=${userId}
+    </update>
+
+    <update id="updateUserLoginTime" parameterType="BumblebeeUser">
+        UPDATE bumblebee_user SET `last_login_time` =#{lastLoginTime}
+        WHERE user_id=${userId}
+    </update>
+
+    <delete id="delPermission" parameterType="int">
+        DELETE FROM group_permission WHERE `group_id`=#{groupId}
+    </delete>
+
+</mapper>
