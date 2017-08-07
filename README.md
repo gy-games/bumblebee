@@ -4,11 +4,11 @@ bumblebee(大黄蜂)运维工具：基于Elves开源自动化运维开发平台�
 	
 ## manager
 Java编写，纯java-web项目，作为管理端和服务端，作为后台管理端可以进行权限分配和为客户端提供接口。
-![](manager-home.png)
+![](img/manager-home.png)
 
 ## client
 c#编写的一款c/s客户端程序，调用bumblebee-manager提供的接口实现服务器的远程命令执行，并显示结果展示。
-![](client-home.png)
+![](img/client-home.png)
 
 ## script
 python编写，依照Elves-App SDK开发，是Elves-Agent端执行的脚本文件，所有的命令通过Elves调用各个服务器上的脚本，执行并回复结果。
@@ -35,9 +35,9 @@ bumblebee运维系统是基于Elves开源自动化运维开发平台进行开发
 	cd bumblebee-script
 	zip -qj cmd_0.0.1.zip cmd/cmd.py cmd/appcfg.json  cmd/app-worker.py
 使用elves-supervisor部署app(cmd_0.0.1.zip)、授权机器、新增密钥。
-![](supervisor-app.png)
+![](img/supervisor-app.png)
 
-![](supervisor-auth.png)
+![](img/supervisor-auth.png)
 
 二、bumblebee-manager部署：标准的Java web项目，使用maven打包war包，发布tomcat即可。
 
@@ -61,7 +61,7 @@ bumblebee运维系统是基于Elves开源自动化运维开发平台进行开发
 	   mvn package
 	   cp bumblebee-web/target/bumblebee-web.war ROOT.war
 
-进去bumblebee-manager管理端 新建用户（），新建分组，授权机器即可进行操作了。
+进去bumblebee-manager管理端 新建用户，新建分组，授权机器即可进行操作了。
 
 	注： 
 	1.数据库表 bumblebee_agent 中存放的是bumblebee系统的机器列表源数据，需要手动录入
@@ -79,7 +79,9 @@ bumblebee运维系统是基于Elves开源自动化运维开发平台进行开发
 		</startup>
 	</configuration>
 
+![](img/client-login.png)
 
+![](img/client-result.png)
 
 ## License
 Licensed under the Apache License, Version 2.0
