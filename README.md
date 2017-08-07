@@ -38,6 +38,7 @@ bumblebee运维系统是基于Elves开源自动化运维开发平台进行开发
 ![](supervisor-app.png)
 
 ![](supervisor-auth.png)
+
 二、bumblebee-manager部署：标准的Java web项目，使用maven打包war包，发布tomcat即可。
 
 	1. bumblebee-manager/db.sql  新建数据库
