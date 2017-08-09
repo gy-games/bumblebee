@@ -6,6 +6,7 @@ import cn.gyyx.bumblebee.model.BumblebeeUser;
 import cn.gyyx.bumblebee.model.CommandBlacklist;
 import cn.gyyx.bumblebee.model.OperateLog;
 import cn.gyyx.bumblebee.service.TerminalService;
+import cn.gyyx.bumblebee.util.Base64Util;
 import cn.gyyx.bumblebee.util.DateUtil;
 import cn.gyyx.bumblebee.util.ElvesUtil;
 import cn.gyyx.bumblebee.util.ValidateUtil;
@@ -22,7 +23,7 @@ import java.util.Map;
 
 /**
  * @Author : east.Fu
- * @Description :
+ * @Description : 客户端servicice impl
  * @Date : Created in  2017/7/13 11:20
  */
 @Service
@@ -142,7 +143,7 @@ public class TerminalServiceImpl implements TerminalService{
 
         //封装参数
         Map<String, Object> cmd =new HashMap<String, Object>();
-        cmd.put("cmd",command);
+        cmd.put("cmd", Base64Util.getBase64(command));
 
         Map<String, Object> params =new HashMap<String, Object>();
         params.put("ip",ip.trim());

@@ -24,14 +24,19 @@ public class ZookeeperExcutor {
 
 	private static final Logger LOG=Logger.getLogger(ZookeeperExcutor.class);
 
-	private static String zklist = "";
-	private static int outTime = 0;
+	public static boolean enabled = false;
+
+    public static String zklist = "";
+
+    public static int outTime = 0;
+
     static{
         InputStream is =null;
         try {
             is =ElvesUtil.class.getResourceAsStream("/conf.properties");
             Properties properties = new Properties();
             properties.load(is);
+            enabled=Boolean.getBoolean(properties.getProperty("zookeeper.enabled"));
             zklist=properties.getProperty("zookeeper.host");
             outTime=Integer.parseInt(properties.getProperty("zookeeper.outTime"));
         }catch (IOException e){

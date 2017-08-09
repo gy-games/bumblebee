@@ -7,6 +7,7 @@
 #   app worker 示例 [文件名需要与类名一致]
 
 import commands
+import base64
 class cmd():
 
     def excute(self,param):
@@ -14,6 +15,7 @@ class cmd():
         result={}
         try:
             cmd=param["cmd"]
+            cmd=base64.b64decode(cmd)
             (status, output) = commands.getstatusoutput(cmd)
             result["code"]=status
             result["data"] =output

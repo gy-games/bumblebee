@@ -14,9 +14,11 @@
                 <button class="btn btn-info pull-left" onclick="reflushDatable('agent-datatable')">
                     <i class="fa fa-repeat"></i> 刷新
                 </button>
+                <!--
                 <button class="btn btn-success pull-left" onclick="syncAgent()">
                     <i class="fa fa-repeat"></i> 同步机器列表
                 </button>
+                -->
                 <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -67,21 +69,6 @@
                 "mDataProp" : "subName",
                 "sDefaultContent":"",
                 "sTitle" : "二级分类",
-            },{
-                "mDataProp" : "status",
-                "sDefaultContent":"",
-                "sTitle" : "Elves状态",
-                "mRender": function ( data, type,row,full) {
-                    if(data=="在线"){
-                        return "<font color='#adff2f'>"+data+"</font>";
-                    }else{
-                        return "<font color='red'>"+data+"</font>";
-                    }
-                }
-            },{
-                "mDataProp" : "ckTime",
-                "sDefaultContent":"",
-                "sTitle" : "心跳时间"
             }],
             "bProcessing": true,
             "processing" : true,
