@@ -28,9 +28,6 @@ public class CommandController {
     @Autowired
     private TerminalService terminalServiceImpl;
 
-    @Autowired
-    private BumblebeeService bumblebeeServiceImpl;
-
     @RequestMapping("/agentList")
     @ResponseBody
     public String agentList(HttpServletRequest request, BumblebeeAgent agent){

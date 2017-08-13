@@ -3,7 +3,10 @@
 bumblebee(大黄蜂)运维工具：基于Elves开源自动化运维开发平台进行开发，实现的一款远程命令行执行工具（Elves开源自动化运维开发平台地址：[https://github.com/gy-games/elves](https://github.com/gy-games/elves)），bumblebee分为manager、client、script三部分。
 	
 ## manager
-Java编写，纯java-web项目，作为管理端和服务端，作为后台管理端可以进行权限分配和为客户端提供接口。
+Java编写，纯java-web项目，作为管理端和服务端。
+作为后台管理端可以进行权限分配、日志查看、发送命令。
+作为服务端为客户端提供服务接口，实现指令的远程调用。
+
 ![](img/manager-home.png)
 
 ## client
@@ -48,13 +51,15 @@ bumblebee运维系统是基于Elves开源自动化运维开发平台进行开发
 		#mysql database setting(test)
 		jdbc.url=jdbc\:mysql\://127.0.0.1\:3306/db_bumblebee?characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull
 		jdbc.username=root
-		jdbc.password=root
+		jdbc.password=rot
 		
-		#elves config
+		#elves-auth
 		elves.auth.id=xxxxxxxxx
 		elves.auth.key=xxxxxxxxx
-		elves.app=cmd
+		# elves-opeanapi host
 		elves.api.host=http://127.0.0.1
+		# elves-app-name(bumblebee-script)
+		elves.app=cmd
 		
 	3. maven打包war包，发布到tomcat
 	   cd bumblebee-manager
@@ -68,7 +73,7 @@ bumblebee运维系统是基于Elves开源自动化运维开发平台进行开发
 	1.数据库表 bumblebee_agent 中存放的是bumblebee系统的机器列表源数据，需要手动录入
 	2.默认帐号：admin@gyyx.cn，密码：123456 , 新增用户初始密码： 123456
 
-三、bumblebee-client部署：客户端已经打包成exe程序，在bumblebee首页即可下载使用，需要修改 Bumblebee客户端.exe.config中服务端的地址：
+三、bumblebee-client部署：客户端已经打包成exe程序，在bumblebee首页即可下载使用，需要修改 Bumblebee客户端.exe.config中服务端的地址(BumblebeeServerHost)：
 
 	<?xml version="1.0"?>
 	<configuration>

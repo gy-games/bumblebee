@@ -1,7 +1,6 @@
 package cn.gyyx.bumblebee.util;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.UnsupportedEncodingException;
 
@@ -16,14 +15,11 @@ public class Base64Util {
         byte[] b = null;
         String s = null;
         try {
-            b = str.getBytes("utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            b = Base64.encodeBase64(str.getBytes(),true);
+            return new String(b);
+        } catch (Exception e) {
+            return null;
         }
-        if (b != null) {
-            s = new BASE64Encoder().encode(b);
-        }
-        return s;
     }
 
     // 解密
@@ -31,9 +27,8 @@ public class Base64Util {
         byte[] b = null;
         String result = null;
         if (s != null) {
-            BASE64Decoder decoder = new BASE64Decoder();
             try {
-                b = decoder.decodeBuffer(s);
+                b=Base64.decodeBase64(s);
                 result = new String(b, "utf-8");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -41,5 +36,4 @@ public class Base64Util {
         }
         return result;
     }
-
 }
