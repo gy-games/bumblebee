@@ -47,24 +47,30 @@ namespace BumblebeeClient
             pm.Add("timestamp",SecurityUtil.GetTimestamp());
             string sign=SecurityUtil.CreateSign(pm);
             pm.Add("sign",sign);
-            string result = HttpUtil.SendPost(ConstantUrl.loginUrl, pm);
-
-            if (String.IsNullOrEmpty(result)){
-                MessageBox.Show("登录失败，服务端异常！", "提示");
-            }
-            else if ("success".Equals(result))
+            try
             {
-                MainWindow main = new MainWindow(this,account);
-                main.StartPosition = FormStartPosition.Manual;
-                int xWidth = SystemInformation.PrimaryMonitorSize.Width;
-                int yHeight = SystemInformation.PrimaryMonitorSize.Height;
-                main.Location = new Point((xWidth - main.Width) / 2, (yHeight - main.Height) / 2);
-                this.Hide();
-                main.Show();
+                string result = HttpUtil.SendPost(ConstantUrl.loginUrl, pm);
+                if (String.IsNullOrEmpty(result))
+                {
+                    MessageBox.Show("登录失败，服务端异常！", "提示");
+                }
+                else if ("success".Equals(result))
+                {
+                    MainWindow main = new MainWindow(this, account);
+                    main.StartPosition = FormStartPosition.Manual;
+                    int xWidth = SystemInformation.PrimaryMonitorSize.Width;
+                    int yHeight = SystemInformation.PrimaryMonitorSize.Height;
+                    main.Location = new Point((xWidth - main.Width) / 2, (yHeight - main.Height) / 2);
+                    this.Hide();
+                    main.Show();
+                }
+                else
+                {
+                    MessageBox.Show("登录失败，用户名或密码错误！", "提示");
+                }
             }
-            else
-            {
-                MessageBox.Show("登录失败，用户名或密码错误！", "提示");
+            catch (Exception ee) {
+                MessageBox.Show("登录失败，服务端异常！("+ee.Message+")", "提示");
             }
             this.login_btn.Enabled = true;
         }

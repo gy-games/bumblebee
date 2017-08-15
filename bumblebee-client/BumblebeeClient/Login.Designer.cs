@@ -119,7 +119,7 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "Login";
-            this.Text = "Bumblebee客户端";
+            this.Text = "BumblebeeClient";
             this.Activated += new System.EventHandler(this.Login_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Login_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Login_FormClosed);

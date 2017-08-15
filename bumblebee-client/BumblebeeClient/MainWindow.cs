@@ -35,61 +35,60 @@ namespace BumblebeeClient
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            //this.rsttitle.Hide();
             //首页获取搜索栏
             Dictionary<string, string> pm = new Dictionary<string, string>();
             pm.Add("email", loginUserEmail);
             pm.Add("timestamp", SecurityUtil.GetTimestamp());
             string sign = SecurityUtil.CreateSign(pm);
             pm.Add("sign", sign);
-            string result = HttpUtil.SendGet(ConstantUrl.agentConditionUrl,pm);
-
-            if (!string.IsNullOrEmpty(result)) 
+            try
             {
-                IDictionary<string, List<string>> data = JsonConvert.DeserializeObject<IDictionary<string, List<string>>>(result);
-                List<string> mainNameList = new List<string>();
-                mainNameList.Add("一级分类");
-                mainNameList.AddRange(data["mainNameList"]);
-                this.mainNameBox.DataSource = mainNameList;
-                this.mainNameBox.SelectedIndex = 0;
-
-                List<string> subNameList = new List<string>();
-                subNameList.Add("二级分类");
-                subNameList.AddRange(data["subNameList"]);
-                this.subNameBox.DataSource = subNameList;
-                this.subNameBox.SelectedIndex = 0;
-
-                List<string> managerList = new List<string>();
-                managerList.Add("管理员");
-                managerList.AddRange(data["managerList"]);
-                this.managerBox.DataSource = managerList;
-                this.managerBox.SelectedIndex = 0;
-
-                this.searchTypeBox.SelectedIndex = 0;
+                string result = HttpUtil.SendGet(ConstantUrl.agentConditionUrl, pm);
+                if (!string.IsNullOrEmpty(result))
+                {
+                    IDictionary<string, List<string>> data = JsonConvert.DeserializeObject<IDictionary<string, List<string>>>(result);
+                    List<string> mainNameList = new List<string>();
+                    mainNameList.Add("一级分类");
+                    mainNameList.AddRange(data["mainNameList"]);
+                    this.mainNameBox.DataSource = mainNameList;
+                    this.mainNameBox.SelectedIndex = 0;
+                    List<string> subNameList = new List<string>();
+                    subNameList.Add("二级分类");
+                    subNameList.AddRange(data["subNameList"]);
+                    this.subNameBox.DataSource = subNameList;
+                    this.subNameBox.SelectedIndex = 0;
+                    List<string> managerList = new List<string>();
+                    managerList.Add("负责人");
+                    managerList.AddRange(data["managerList"]);
+                    this.managerBox.DataSource = managerList;
+                    this.managerBox.SelectedIndex = 0;
+                    this.searchTypeBox.SelectedIndex = 0;
+                }
+                else
+                {
+                    MessageBox.Show("获取搜索表单异常，数据返回为空！", "提示");
+                    return;
+                }
             }
-            else
-            {
-                MessageBox.Show("查询异常，请联系管理员！", "提示");
+            catch (Exception ee) {
+                MessageBox.Show("获取搜索表单异常("+ee.Message+")", "提示");
                 return;
             }
-            
             Dictionary<string, string> pm2 = new Dictionary<string, string>();
             pm2.Add("email", loginUserEmail);
             pm2.Add("timestamp",SecurityUtil.GetTimestamp());
             string sign2 = SecurityUtil.CreateSign(pm2);
             pm2.Add("sign", sign2);
-            string result2 = HttpUtil.SendGet(ConstantUrl.agentListUrl, pm2);
-
-            if (!string.IsNullOrEmpty(result2))
-            {
-                List<AgentInfo> data2 = JsonConvert.DeserializeObject<List<AgentInfo>>(result2);
-                DataTable dt = DataTableExtensions.ToDataTable(data2);
-                this.agentDataGrid.DataSource = dt;
-                
-            }
-            else 
-            {
-                MessageBox.Show("查询异常，请联系管理员！", "提示");   
+            try {
+                string result2 = HttpUtil.SendGet(ConstantUrl.agentListUrl, pm2);
+                if (!string.IsNullOrEmpty(result2))
+                {
+                    List<AgentInfo> data2 = JsonConvert.DeserializeObject<List<AgentInfo>>(result2);
+                    DataTable dt = DataTableExtensions.ToDataTable(data2);
+                    this.agentDataGrid.DataSource = dt;
+                }
+            } catch (Exception ee) {
+                MessageBox.Show("默认服务器列表获取异常！("+ee.Message+")", "提示");
             }
         }
 
@@ -139,7 +138,7 @@ namespace BumblebeeClient
             }
 
             string manager = managerBox.Text;
-            if (!"管理员".Equals(manager) && !"".Equals(manager))
+            if (!"负责人".Equals(manager) && !"".Equals(manager))
             {
                 pm.Add("manager", manager);
             }
@@ -162,26 +161,34 @@ namespace BumblebeeClient
                     pm.Add("asset", searchContent);
                 }
                 else 
-                { 
-                    //不搜索
+                {
+                    MessageBox.Show("请选择搜索条件！", "提示");
                 }
             }
 
             string sign = SecurityUtil.CreateSign(pm);
             pm.Add("sign", sign);
-
-            string result = HttpUtil.SendPost(ConstantUrl.agentListUrl, pm);
-            if (!string.IsNullOrEmpty(result))
+            try
             {
-                List<AgentInfo> data2 = JsonConvert.DeserializeObject<List<AgentInfo>>(result);
-                DataTable dt = DataTableExtensions.ToDataTable(data2);
-                this.agentDataGrid.DataSource = dt;
+                string result = HttpUtil.SendPost(ConstantUrl.agentListUrl, pm);
+                if (!string.IsNullOrEmpty(result))
+                {
+                    List<AgentInfo> data2 = JsonConvert.DeserializeObject<List<AgentInfo>>(result);
+                    DataTable dt = DataTableExtensions.ToDataTable(data2);
+                    this.agentDataGrid.DataSource = dt;
+                }
+                else
+                {
+                    MessageBox.Show("查询异常,未返回查询结果！", "提示");
+                    this.agentDataGrid.DataSource = null;
+                }
             }
-            else
-            {
-                MessageBox.Show("查询异常，请联系管理员！", "提示");
+            catch (Exception ee) {
+                MessageBox.Show("查询异常!("+ee.Message+")", "提示");
                 this.agentDataGrid.DataSource = null;
             }
+            
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -272,26 +279,33 @@ namespace BumblebeeClient
 
                     Thread oGetArgThread = new Thread(new System.Threading.ThreadStart(() =>
                     {
-                        string result = HttpUtil.SendPost(ConstantUrl.runCommandUrl, pm);
-                        if (String.IsNullOrEmpty(result))
+                        try
                         {
-                            row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                            row.Cells["Result"].Value = "bumblebee server error";
-                        }
-                        else
-                        {
-                            Dictionary<string, Object> data = JsonConvert.DeserializeObject<Dictionary<string, Object>>(result);
-                            if (data == null || data["code"] == null || int.Parse(data["code"].ToString()) != 0)
+                            string result = HttpUtil.SendPost(ConstantUrl.runCommandUrl, pm);
+                            if (String.IsNullOrEmpty(result.Trim()))
                             {
-                                //失败
                                 row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
+                                row.Cells["Result"].Value = "bumblebee server error";
                             }
                             else
                             {
-                                //成功
-                                row.DefaultCellStyle.BackColor = System.Drawing.Color.PaleGreen;
+                                Dictionary<string, Object> data = JsonConvert.DeserializeObject<Dictionary<string, Object>>(result);
+                                if (data == null || data["code"] == null || int.Parse(data["code"].ToString()) != 0)
+                                {
+                                    //失败
+                                    row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
+                                }
+                                else
+                                {
+                                    //成功
+                                    row.DefaultCellStyle.BackColor = System.Drawing.Color.PaleGreen;
+                                }
+                                row.Cells["Result"].Value = data["data"];
                             }
-                            row.Cells["Result"].Value = data["data"];
+                        }
+                        catch (Exception ee) {
+                            row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
+                            row.Cells["Result"].Value = ee.ToString();
                         }
                     }));
                     oGetArgThread.IsBackground = true;
@@ -330,12 +344,17 @@ namespace BumblebeeClient
                 pm.Add("timestamp", SecurityUtil.GetTimestamp());
                 string sign = SecurityUtil.CreateSign(pm);
                 pm.Add("sign", sign);
-
-                string result = HttpUtil.SendGet(ConstantUrl.subNameListUrl, pm);
-                if (!String.IsNullOrEmpty(result))
+                try
                 {
-                    List<string> subNameList = JsonConvert.DeserializeObject<List<string>>(result);
-                    data.AddRange(subNameList);
+                    string result = HttpUtil.SendGet(ConstantUrl.subNameListUrl, pm);
+                    if (!String.IsNullOrEmpty(result))
+                    {
+                        List<string> subNameList = JsonConvert.DeserializeObject<List<string>>(result);
+                        data.AddRange(subNameList);
+                    }
+                }
+                catch (Exception ee) {
+                    MessageBox.Show("获取联动搜索内容异常!(" + ee.Message + ")", "提示");
                 }
             }
             this.subNameBox.DataSource = data;

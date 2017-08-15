@@ -81,8 +81,8 @@
             this.menuStrip.GripMargin = new System.Windows.Forms.Padding(0);
             this.menuStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.HelpToolStripMenuItem,
-            this.ReloginToolStripMenuItem});
+            this.ReloginToolStripMenuItem,
+            this.HelpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1195, 25);
@@ -261,9 +261,9 @@
             // rstx
             // 
             this.rstx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.rstx.Location = new System.Drawing.Point(155, 523);
+            this.rstx.Location = new System.Drawing.Point(149, 523);
             this.rstx.Name = "rstx";
-            this.rstx.Size = new System.Drawing.Size(84, 23);
+            this.rstx.Size = new System.Drawing.Size(90, 23);
             this.rstx.TabIndex = 5;
             this.rstx.Text = "复制执行结果";
             this.rstx.UseVisualStyleBackColor = true;
@@ -474,7 +474,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainWindow";
-            this.Text = "Bumblebee";
+            this.Text = "BumblebeeClient";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainWindow_FormClosed);
             this.Load += new System.EventHandler(this.MainWindow_Load);

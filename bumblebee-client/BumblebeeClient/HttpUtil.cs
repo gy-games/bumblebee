@@ -12,19 +12,17 @@ namespace BumblebeeClient
     {
         public static string SendPost(string url, Dictionary<string,string> param)
         {
-            try
-            {
+           // try
+            //{
                 StringBuilder sb = new StringBuilder();
                 foreach (string k in param.Keys)
                 {
                     sb.Append(k);
                     sb.Append("=");
-                    sb.Append(param[k]);
+                    sb.Append(Uri.EscapeDataString(param[k]));
                     sb.Append("&");
                 }
-
                 var result = string.Empty;
-                //注意提交的编码 这边是需要改变的 这边默认的是Default：系统当前编码
                 byte[] postData = null;
                 if (param.Count > 0)
                 {
@@ -34,8 +32,6 @@ namespace BumblebeeClient
                 {
                     postData = Encoding.UTF8.GetBytes(sb.ToString());
                 }
-
-                // 设置提交的相关参数 
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                 Encoding myEncoding = Encoding.UTF8;
                 request.Method = "POST";
@@ -58,29 +54,29 @@ namespace BumblebeeClient
                 responseStream = response.GetResponseStream();
                 reader = new System.IO.StreamReader(responseStream, Encoding.GetEncoding("UTF-8"));
                 srcString = reader.ReadToEnd();
-                result = srcString;   //返回值赋值
+                result = srcString;
                 reader.Close();
 
                 return result;
-            }
-            catch (Exception e) 
-            {
-                Console.WriteLine(e.Message);
-                return "";
-            }
+           // }
+           // catch (Exception e) 
+           // {
+           //     Console.WriteLine(e.Message);
+           //    return "";
+           // }
             
         }
 
         public static string SendGet(string Url, Dictionary<string,string> param)
         {
-            try
-            {
+            //try
+            //{
                 StringBuilder sb = new StringBuilder();
                 foreach (string k in param.Keys)
                 {
                     sb.Append(k);
                     sb.Append("=");
-                    sb.Append(param[k]);
+                    sb.Append(Uri.EscapeDataString(param[k]));
                     sb.Append("&");
                 }
 
@@ -106,12 +102,12 @@ namespace BumblebeeClient
                 myResponseStream.Close();
 
                 return retString;
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return "";
-            }
+            //}
+           // catch(Exception e)
+           // {
+           //     Console.WriteLine(e.Message);
+           //     return "";
+           // }
         }         
     }
 }
