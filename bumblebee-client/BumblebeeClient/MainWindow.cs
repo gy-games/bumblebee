@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace BumblebeeClient
 {
@@ -300,7 +301,7 @@ namespace BumblebeeClient
                                     //成功
                                     row.DefaultCellStyle.BackColor = System.Drawing.Color.PaleGreen;
                                 }
-                                row.Cells["Result"].Value = data["data"];
+                                row.Cells["Result"].Value = Unicode2String(data["data"].ToString());
                             }
                         }
                         catch (Exception ee) {
@@ -488,8 +489,9 @@ namespace BumblebeeClient
                 if (e.ColumnIndex != 0) {
                     this.rsttitle.Show();
                     this.rsttitle.Text = "IP:" + agentDataGrid[2, e.RowIndex].Value.ToString() + " Result:";
-                    if (agentDataGrid[1, e.RowIndex].Value != null) {
-                        this.rst.Text = agentDataGrid[1, e.RowIndex].Value.ToString().Replace("\n","\r\n");
+                    if (agentDataGrid[1, e.RowIndex].Value != null)
+                    {
+                        this.rst.Text = Unicode2String(agentDataGrid[1, e.RowIndex].Value.ToString()).Replace("\n", "\r\n").Replace("\\n", "\r\n");
                     }
                     else
                     {
@@ -498,6 +500,18 @@ namespace BumblebeeClient
                 }
             }
 
+        }
+
+        public static string Unicode2String(string source)
+        {
+            try
+            {
+                return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(
+                             source, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
+            }
+            catch (Exception ee) {
+                return "返回结果编码转换异常!" + ee.Message;
+            }
         }
     }
 }

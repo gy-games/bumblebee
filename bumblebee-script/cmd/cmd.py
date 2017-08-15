@@ -1,13 +1,14 @@
 #!/usr/bin/python
-# coding=utf-8  
-# Author: toryzen  
-#  
-# Create: 2016/06/22
+# -*- coding:utf-8 -*-
 #
-#   app worker 示例 [文件名需要与类名一致]
+# Bumblebee Elves App
+#
+#
 
 import commands
 import base64
+import platform
+
 class cmd():
 
     def excute(self,param):
@@ -16,7 +17,14 @@ class cmd():
         try:
             cmd=param["cmd"]
             cmd=base64.b64decode(cmd)
-            (status, output) = commands.getstatusoutput(cmd)
+            if( platform.system() == 'Windows' ):
+                import os
+                status=0
+                winout=os.popen(cmd)
+                o = winout.read()
+                output=o.decode("gb2312").encode("unicode_escape")
+            else:
+                (status, output) = commands.getstatusoutput(cmd)
             result["code"]=status
             result["data"] =output
             flag="true"
