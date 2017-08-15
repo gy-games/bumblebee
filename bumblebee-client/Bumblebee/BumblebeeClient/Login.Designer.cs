@@ -31,12 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             this.login_btn = new System.Windows.Forms.Button();
             this.close_btn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.label_username = new System.Windows.Forms.Label();
+            this.label_password = new System.Windows.Forms.Label();
             this.account_txt = new System.Windows.Forms.TextBox();
             this.pwd_txt = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // login_btn
@@ -59,23 +59,23 @@
             this.close_btn.UseVisualStyleBackColor = true;
             this.close_btn.Click += new System.EventHandler(this.close_btn_Click);
             // 
-            // label1
+            // label_username
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(102, 150);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 12);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "帐号:";
+            this.label_username.AutoSize = true;
+            this.label_username.Location = new System.Drawing.Point(102, 150);
+            this.label_username.Name = "label_username";
+            this.label_username.Size = new System.Drawing.Size(35, 12);
+            this.label_username.TabIndex = 2;
+            this.label_username.Text = "帐号:";
             // 
-            // label2
+            // label_password
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(103, 198);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 12);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "密码:";
+            this.label_password.AutoSize = true;
+            this.label_password.Location = new System.Drawing.Point(103, 198);
+            this.label_password.Name = "label_password";
+            this.label_password.Size = new System.Drawing.Size(35, 12);
+            this.label_password.TabIndex = 3;
+            this.label_password.Text = "密码:";
             // 
             // account_txt
             // 
@@ -92,14 +92,14 @@
             this.pwd_txt.TabIndex = 5;
             this.pwd_txt.UseSystemPasswordChar = true;
             // 
-            // pictureBox1
+            // pictureBox
             // 
-            this.pictureBox1.Image = global::BumblebeeClient.Properties.Resources.bg;
-            this.pictureBox1.Location = new System.Drawing.Point(132, 1);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(186, 120);
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
+            this.pictureBox.Image = global::BumblebeeClient.Properties.Resources.bg;
+            this.pictureBox.Location = new System.Drawing.Point(132, 1);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(186, 120);
+            this.pictureBox.TabIndex = 6;
+            this.pictureBox.TabStop = false;
             // 
             // Login
             // 
@@ -107,11 +107,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(427, 299);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.pwd_txt);
             this.Controls.Add(this.account_txt);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label_password);
+            this.Controls.Add(this.label_username);
             this.Controls.Add(this.close_btn);
             this.Controls.Add(this.login_btn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -125,7 +125,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Login_FormClosed);
             this.Load += new System.EventHandler(this.Login_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Login_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,9 +135,9 @@
 
         private System.Windows.Forms.Button login_btn;
         private System.Windows.Forms.Button close_btn;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label_username;
+        private System.Windows.Forms.Label label_password;
+        private System.Windows.Forms.PictureBox pictureBox;
         public System.Windows.Forms.TextBox account_txt;
         public System.Windows.Forms.TextBox pwd_txt;
     }

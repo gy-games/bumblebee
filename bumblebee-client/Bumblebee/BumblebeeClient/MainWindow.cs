@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Threading;
-using System.Reflection;
 
 namespace BumblebeeClient
 {
@@ -24,7 +20,7 @@ namespace BumblebeeClient
             currLogin = log;
             loginUserEmail=email;
             InitializeComponent();
-            this.toolStripStatusLabel1.Text = this.toolStripStatusLabel1.Text +"【" +loginUserEmail+"】";
+            this.loginStatusLabel.Text = this.loginStatusLabel.Text +"【" +loginUserEmail+"】";
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -39,6 +35,7 @@ namespace BumblebeeClient
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            //this.rsttitle.Hide();
             //首页获取搜索栏
             Dictionary<string, string> pm = new Dictionary<string, string>();
             pm.Add("email", loginUserEmail);
@@ -227,14 +224,14 @@ namespace BumblebeeClient
         private void button1_Click(object sender, EventArgs e)
         {
             //运行命令获取结果
-            string command = textBox1.Text;
+            string command = cmdtext.Text;
             if ("".Equals(command)) 
             {
                 MessageBox.Show("命令为空，请输入命令！","提示");
                 return;
             }
             
-            this.button1.Enabled = false;
+            this.execbtn.Enabled = false;
 
 
             List<int> jobs = new List<int>();
@@ -301,7 +298,7 @@ namespace BumblebeeClient
                     oGetArgThread.Start();             
                 }
             }
-            this.button1.Enabled = true;
+            this.execbtn.Enabled = true;
             
         }
 
@@ -310,7 +307,7 @@ namespace BumblebeeClient
             System.Environment.Exit(0);
         }
 
-        private void 帮助ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
@@ -354,7 +351,7 @@ namespace BumblebeeClient
             }
         }
 
-        private void 重新登录ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ReloginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("确定要重新登录么？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
@@ -365,9 +362,9 @@ namespace BumblebeeClient
             }
         }
 
-        private void 关于ElvesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AboutElvesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Dialog dialog = new Dialog();
+            About dialog = new About();
             dialog.StartPosition = FormStartPosition.Manual;
             int xWidth = SystemInformation.PrimaryMonitorSize.Width;
             int yHeight = SystemInformation.PrimaryMonitorSize.Height;
@@ -377,16 +374,15 @@ namespace BumblebeeClient
 
         private void agentDataGrid_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            
             DataGridViewColumn newColumn = agentDataGrid.Columns[e.ColumnIndex];
             if(!String.IsNullOrEmpty(newColumn.DataPropertyName) && newColumn.SortMode ==DataGridViewColumnSortMode.Programmatic) 
             {
                 DataGridViewColumn oldColumn = agentDataGrid.SortedColumn;
                 ListSortDirection direction;
 
-                // If oldColumn is null, then the DataGridView is not sorted.
                 if (oldColumn != null)
                 {
-                    // Sort the same column again, reversing the SortOrder.
                     if (oldColumn == newColumn &&
                         agentDataGrid.SortOrder == SortOrder.Ascending)
                     {
@@ -394,7 +390,6 @@ namespace BumblebeeClient
                     }
                     else
                     {
-                        // Sort a new column and remove the old SortGlyph.
                         direction = ListSortDirection.Ascending;
                         oldColumn.HeaderCell.SortGlyphDirection = SortOrder.None;
                     }
@@ -403,13 +398,12 @@ namespace BumblebeeClient
                 {
                     direction = ListSortDirection.Ascending;
                 }
-
-                // Sort the selected column.
                 agentDataGrid.Sort(newColumn, direction);
                 newColumn.HeaderCell.SortGlyphDirection = direction == ListSortDirection.Ascending ? SortOrder.Ascending : SortOrder.Descending;
             }
+            
         }
-
+        
         private void toolTip1_Draw(object sender, DrawToolTipEventArgs e)
         {
             e.DrawBackground();
@@ -417,8 +411,6 @@ namespace BumblebeeClient
             Rectangle rectg = new Rectangle(0, 0, e.Bounds.Width + 1, e.Bounds.Height + 1);
             e.Graphics.DrawRectangle(Pens.Black, rectg);
             e.Graphics.DrawString(this.toolTip1.ToolTipTitle + e.ToolTipText, e.Font, Brushes.Black, rectg);
-
-            
         }
 
         private void agentDataGrid_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
@@ -449,11 +441,9 @@ namespace BumblebeeClient
                 {
                     this.toolTip1.Show(tips, this, new Point(mousePos.X+60, mousePos.Y+30));//在指定位置显示提示框
                 }
-                 
             }
-            
         }
-
+        
         private void toolTip1_Popup(object sender, PopupEventArgs e)
         {
             //重设tooltip 的大小
@@ -466,7 +456,29 @@ namespace BumblebeeClient
             }
             e.ToolTipSize = new Size(new Point(width, height));
         }
+        
+        private void rstx_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetDataObject(this.rst.Text);
+            //this.rsttitle.Hide();
+        }
 
-       
+        private void agentDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex != -1) {
+                if (e.ColumnIndex != 0) {
+                    this.rsttitle.Show();
+                    this.rsttitle.Text = "IP:" + agentDataGrid[2, e.RowIndex].Value.ToString() + " Result:";
+                    if (agentDataGrid[1, e.RowIndex].Value != null) {
+                        this.rst.Text = agentDataGrid[1, e.RowIndex].Value.ToString().Replace("\n","\r\n");
+                    }
+                    else
+                    {
+                        this.rst.Text = "";
+                    }
+                }
+            }
+
+        }
     }
 }
