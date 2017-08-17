@@ -134,6 +134,7 @@
             this.MaximumSize = new System.Drawing.Size(468, 255);
             this.MinimumSize = new System.Drawing.Size(468, 255);
             this.Name = "Login";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BumblebeeClient";
             this.Activated += new System.EventHandler(this.Login_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Login_FormClosing);

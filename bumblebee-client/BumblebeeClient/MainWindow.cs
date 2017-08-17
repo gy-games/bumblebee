@@ -13,10 +13,12 @@ namespace BumblebeeClient
 {
     public partial class MainWindow : MaterialForm
     {
+        private static int succcnt = 0, failcnt = 0;
         private readonly MaterialSkinManager materialSkinManager;
         Login currLogin = null;
         public MainWindow(Login loginPannel)
         {
+            Control.CheckForIllegalCrossThreadCalls = false;
             currLogin = loginPannel;
             InitializeComponent();
             materialSkinManager = MaterialSkinManager.Instance;
@@ -72,8 +74,10 @@ namespace BumblebeeClient
             pm2.Add("timestamp", SecurityUtil.GetTimestamp());
             string sign2 = SecurityUtil.CreateSign(pm2, Login.PWDKEY);
             pm2.Add("sign", sign2);
+            int cnt = 0;
             try
             {
+                
                 string result2 = HttpUtil.SendGet(ConstantUrl.agentListUrl, pm2);
                 if (!string.IsNullOrEmpty(result2))
                 {
@@ -82,12 +86,14 @@ namespace BumblebeeClient
                     dt.Columns.Add("rflag", typeof(String));
                     dt.Columns.Add("Result", typeof(String));
                     this.agentDataGrid.DataSource = dt;
+                    cnt= data2.Count;
                 }
             }
             catch (Exception ee)
             {
                 MessageBox.Show("默认服务器列表获取异常！(" + ee.Message + ")", "提示");
             }
+            this.serverlist.Text = "服务器列表 总数:" + cnt.ToString() + "";
         }
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -145,6 +151,7 @@ namespace BumblebeeClient
             }
             string sign = SecurityUtil.CreateSign(pm, Login.PWDKEY);
             pm.Add("sign", sign);
+            int cnt = 0;
             try
             {
                 string result = HttpUtil.SendPost(ConstantUrl.agentListUrl, pm);
@@ -155,6 +162,7 @@ namespace BumblebeeClient
                     dt.Columns.Add("rflag", typeof(String));
                     dt.Columns.Add("Result", typeof(String));
                     this.agentDataGrid.DataSource = dt;
+                    cnt = data2.Count;
                 }
                 else
                 {
@@ -167,6 +175,9 @@ namespace BumblebeeClient
                 MessageBox.Show("查询异常!(" + ee.Message + ")", "提示");
                 this.agentDataGrid.DataSource = null;
             }
+            this.serverlist.Text = "服务器列表 总数:" + cnt.ToString() + "";
+            //succcnt = 0;failcnt = 0;
+            execStatus.Text = "执行中:0,成功:0,失败:0";
         }
         private void selectall_Click(object sender, EventArgs e)
         {
@@ -205,6 +216,8 @@ namespace BumblebeeClient
         }
         private void execbtn_Click(object sender, EventArgs e)
         {
+            succcnt = 0;
+            failcnt = 0;
             //运行命令获取结果
             string command = cmdtext.Text;
             if ("".Equals(command))
@@ -235,66 +248,83 @@ namespace BumblebeeClient
                 foreach (int index in jobs)
                 {
                     DataGridViewRow row = agentDataGrid.Rows[index];
-                    string ip = row.Cells["AgentIp"].EditedFormattedValue.ToString();
-                    Dictionary<string, string> pm = new Dictionary<string, string>();
-                    pm.Add("email", Login.EMAIL);
-                    pm.Add("ip", ip);
-                    pm.Add("command", command);
-                    pm.Add("timestamp", SecurityUtil.GetTimestamp());
-                    string sign = SecurityUtil.CreateSign(pm, Login.PWDKEY);
-                    pm.Add("sign", sign);
-                    Thread oGetArgThread = new Thread(new System.Threading.ThreadStart(() =>
-                    {
-                        try
-                        {
-                            string result = HttpUtil.SendPost(ConstantUrl.runCommandUrl, pm);
-                            if (String.IsNullOrEmpty(result.Trim()))
+                    try {
+                        lock (row) {
+                            string ip = row.Cells["AgentIp"].EditedFormattedValue.ToString();
+                            Dictionary<string, string> pm = new Dictionary<string, string>();
+                            pm.Add("email", Login.EMAIL);
+                            pm.Add("ip", ip);
+                            pm.Add("command", command);
+                            pm.Add("timestamp", SecurityUtil.GetTimestamp());
+                            string sign = SecurityUtil.CreateSign(pm, Login.PWDKEY);
+                            pm.Add("sign", sign);
+                            Thread oGetArgThread = new Thread(new System.Threading.ThreadStart(() =>
                             {
-                                //返回结果为空
-                                row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                                row.Cells["rflag"].Value = "异常";
-                                row.Cells["Result"].Value = "Bumblebee Server返回结果为空！";
-                            }
-                            else
-                            {
-                                Dictionary<string, Object> data = JsonConvert.DeserializeObject<Dictionary<string, Object>>(result);
-                                if (data == null || data["code"] == null || int.Parse(data["code"].ToString()) != 0)
+                                try
                                 {
-                                    //失败
+                                    string result = HttpUtil.SendPost(ConstantUrl.runCommandUrl, pm);
+                                    if (String.IsNullOrEmpty(result.Trim()))
+                                    {
+                                        //返回结果为空
+                                        row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
+                                        row.Cells["rflag"].Value = "异常";
+                                        row.Cells["Result"].Value = "Bumblebee Server返回结果为空！";
+                                        failcnt++;
+                                    }
+                                    else
+                                    {
+                                        Dictionary<string, Object> data = JsonConvert.DeserializeObject<Dictionary<string, Object>>(result);
+                                        if (data == null || data["code"] == null || int.Parse(data["code"].ToString()) != 0)
+                                        {
+                                            //失败
+                                            row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
+                                            row.Cells["rflag"].Value = "失败";
+                                            failcnt++;
+                                        }
+                                        else
+                                        {
+                                            //成功
+                                            row.Cells["rflag"].Value = "成功";
+                                            row.DefaultCellStyle.BackColor = System.Drawing.Color.PaleGreen;
+                                            succcnt++;
+                                        }
+                                        string miniValue = "";
+                                        if (Unicode2String(data["data"].ToString()).Length > 40)
+                                        {
+                                            miniValue = Unicode2String(data["data"].ToString()).Substring(0, 40);
+                                        }
+                                        else
+                                        {
+                                            miniValue = Unicode2String(data["data"].ToString());
+                                        }
+                                        row.Cells["Result"].Value  = miniValue;
+                                        row.Cells["rstfull"].Value = Unicode2String(data["data"].ToString());
+                                    }
+                                }
+                                catch (Exception ee)
+                                {
                                     row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                                    row.Cells["rflag"].Value = "失败";
+                                    row.Cells["rflag"].Value   = "异常";
+                                    row.Cells["Result"].Value  = "BumblebeeClient Catch Exception!";
+                                    row.Cells["rstfull"].Value = ee.ToString();
+                                    failcnt++;
                                 }
-                                else
-                                {
-                                    //成功
-                                    row.Cells["rflag"].Value = "成功";
-                                    row.DefaultCellStyle.BackColor = System.Drawing.Color.PaleGreen;
-                                }
-                                string miniValue = "";
-                                if (Unicode2String(data["data"].ToString()).Length>40) {
-                                    miniValue = Unicode2String(data["data"].ToString()).Substring(0, 40);
-                                }
-                                else
-                                {
-                                    miniValue = Unicode2String(data["data"].ToString());
-                                }
-                                row.Cells["Result"].Value = miniValue;
-                                row.Cells["rstfull"].Value = Unicode2String(data["data"].ToString());
-                            }
-                        }
-                        catch (Exception ee)
-                        {
-                            //报错
-                            row.Cells["rflag"].Value = "异常";
-                            row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                            row.Cells["Result"].Value = "BumblebeeClient Catch Exception!";
-                            row.Cells["rstfull"].Value = ee.ToString();
+                                execStatus.Text = "执行中:" + (jobs.Count - succcnt - failcnt).ToString() + ",成功:" + succcnt.ToString() + ",失败:" + failcnt.ToString();
+                            }));
+                            oGetArgThread.IsBackground = true;
+                            oGetArgThread.Start();
                         }
                     }
-            ));
-                    oGetArgThread.IsBackground = true;
-                    oGetArgThread.Start();
+                    catch (Exception ee){
+                        row.Cells["rflag"].Value = "异常";
+                        row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
+                        row.Cells["Result"].Value = "BumblebeeClient Catch Exception!";
+                        row.Cells["rstfull"].Value = ee.ToString();
+                        failcnt++;
+                        execStatus.Text = "执行中:"+ (jobs.Count- succcnt -failcnt).ToString() + ",成功:" + succcnt.ToString() + ",失败:" + failcnt.ToString();
+                    }
                 }
+                
             }
             this.execbtn.Enabled = true;
         }
