@@ -11,6 +11,8 @@ namespace BumblebeeClient
     {
         private static string bumblebeeHost =ConfigurationManager.AppSettings.Get("BumblebeeServerHost");
 
+        public static string url = bumblebeeHost + "/";
+
         public static string loginUrl = bumblebeeHost + "/terminal/login";
 
         public static string agentConditionUrl = bumblebeeHost + "/terminal/agentCondition";

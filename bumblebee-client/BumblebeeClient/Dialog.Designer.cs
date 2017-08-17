@@ -54,10 +54,12 @@
             // 
             this.intro_label1.AutoSize = true;
             this.intro_label1.Location = new System.Drawing.Point(12, 23);
+            this.intro_label1.MaximumSize = new System.Drawing.Size(197, 12);
+            this.intro_label1.MinimumSize = new System.Drawing.Size(197, 12);
             this.intro_label1.Name = "intro_label1";
             this.intro_label1.Size = new System.Drawing.Size(197, 12);
             this.intro_label1.TabIndex = 1;
-            this.intro_label1.Text = "Bulblebee(大黄蜂)运维工具(0.0.2)";
+            this.intro_label1.Text = "Bumblebee(大黄蜂)运维工具(0.0.3)";
             // 
             // intro_lic_label
             // 

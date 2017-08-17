@@ -30,22 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.HelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.AbloutElvesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ReloginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serverlist = new System.Windows.Forms.GroupBox();
             this.selectrev = new System.Windows.Forms.Button();
             this.selectall = new System.Windows.Forms.Button();
             this.agentDataGrid = new System.Windows.Forms.DataGridView();
-            this.ck_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.AgentIp = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AgentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Asset = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SubName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rstx = new System.Windows.Forms.Button();
             this.groupSearch = new System.Windows.Forms.GroupBox();
             this.managerBox = new System.Windows.Forms.ComboBox();
@@ -60,58 +48,28 @@
             this.groupAction = new System.Windows.Forms.GroupBox();
             this.agentInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.loginStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.rsttitle = new System.Windows.Forms.GroupBox();
             this.rst = new System.Windows.Forms.TextBox();
-            this.menuStrip.SuspendLayout();
+            this.reloginbtn = new System.Windows.Forms.Label();
+            this.aboutbtn = new System.Windows.Forms.Label();
+            this.usernameLabel = new System.Windows.Forms.Label();
+            this.ck_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.AgentIp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rflag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rstfull = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AgentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Asset = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SubName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.serverlist.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.agentDataGrid)).BeginInit();
             this.groupSearch.SuspendLayout();
             this.groupAction.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.agentInfoBindingSource)).BeginInit();
-            this.statusStrip1.SuspendLayout();
             this.rsttitle.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // menuStrip
-            // 
-            this.menuStrip.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.menuStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.menuStrip.GripMargin = new System.Windows.Forms.Padding(0);
-            this.menuStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
-            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ReloginToolStripMenuItem,
-            this.HelpToolStripMenuItem});
-            this.menuStrip.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1195, 25);
-            this.menuStrip.TabIndex = 0;
-            this.menuStrip.Text = "menuStrip1";
-            this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
-            // 
-            // HelpToolStripMenuItem
-            // 
-            this.HelpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AbloutElvesToolStripMenuItem});
-            this.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem";
-            this.HelpToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.HelpToolStripMenuItem.Text = "帮助";
-            this.HelpToolStripMenuItem.Click += new System.EventHandler(this.HelpToolStripMenuItem_Click);
-            // 
-            // AbloutElvesToolStripMenuItem
-            // 
-            this.AbloutElvesToolStripMenuItem.Name = "AbloutElvesToolStripMenuItem";
-            this.AbloutElvesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.AbloutElvesToolStripMenuItem.Text = "关于Bumblebee";
-            this.AbloutElvesToolStripMenuItem.Click += new System.EventHandler(this.AboutElvesToolStripMenuItem_Click);
-            // 
-            // ReloginToolStripMenuItem
-            // 
-            this.ReloginToolStripMenuItem.Name = "ReloginToolStripMenuItem";
-            this.ReloginToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.ReloginToolStripMenuItem.Text = "重新登录";
-            this.ReloginToolStripMenuItem.Click += new System.EventHandler(this.ReloginToolStripMenuItem_Click);
             // 
             // serverlist
             // 
@@ -120,9 +78,9 @@
             this.serverlist.Controls.Add(this.selectrev);
             this.serverlist.Controls.Add(this.selectall);
             this.serverlist.Controls.Add(this.agentDataGrid);
-            this.serverlist.Location = new System.Drawing.Point(12, 89);
+            this.serverlist.Location = new System.Drawing.Point(12, 150);
             this.serverlist.Name = "serverlist";
-            this.serverlist.Size = new System.Drawing.Size(917, 556);
+            this.serverlist.Size = new System.Drawing.Size(819, 420);
             this.serverlist.TabIndex = 0;
             this.serverlist.TabStop = false;
             this.serverlist.Text = "服务器列表";
@@ -130,24 +88,24 @@
             // selectrev
             // 
             this.selectrev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.selectrev.Location = new System.Drawing.Point(117, 521);
+            this.selectrev.Location = new System.Drawing.Point(117, 385);
             this.selectrev.Name = "selectrev";
             this.selectrev.Size = new System.Drawing.Size(75, 23);
             this.selectrev.TabIndex = 2;
             this.selectrev.Text = "反选";
             this.selectrev.UseVisualStyleBackColor = true;
-            this.selectrev.Click += new System.EventHandler(this.button4_Click);
+            this.selectrev.Click += new System.EventHandler(this.selectrev_Click);
             // 
             // selectall
             // 
             this.selectall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.selectall.Location = new System.Drawing.Point(18, 521);
+            this.selectall.Location = new System.Drawing.Point(18, 385);
             this.selectall.Name = "selectall";
             this.selectall.Size = new System.Drawing.Size(75, 23);
             this.selectall.TabIndex = 1;
             this.selectall.Text = "全选";
             this.selectall.UseVisualStyleBackColor = true;
-            this.selectall.Click += new System.EventHandler(this.button3_Click);
+            this.selectall.Click += new System.EventHandler(this.selectall_Click);
             // 
             // agentDataGrid
             // 
@@ -160,7 +118,9 @@
             this.agentDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ck_column,
             this.AgentIp,
+            this.rflag,
             this.Result,
+            this.rstfull,
             this.AgentName,
             this.Asset,
             this.Manager,
@@ -171,19 +131,229 @@
             this.agentDataGrid.RowTemplate.Height = 23;
             this.agentDataGrid.ShowCellToolTips = false;
             this.agentDataGrid.ShowEditingIcon = false;
-            this.agentDataGrid.Size = new System.Drawing.Size(893, 483);
+            this.agentDataGrid.Size = new System.Drawing.Size(795, 347);
             this.agentDataGrid.TabIndex = 0;
             this.agentDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.agentDataGrid_CellContentClick);
             this.agentDataGrid.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.agentDataGrid_ColumnHeaderMouseClick);
             this.agentDataGrid.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.agentDataGrid_RowPostPaint);
             // 
+            // rstx
+            // 
+            this.rstx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.rstx.Location = new System.Drawing.Point(104, 387);
+            this.rstx.Name = "rstx";
+            this.rstx.Size = new System.Drawing.Size(90, 23);
+            this.rstx.TabIndex = 5;
+            this.rstx.Text = "复制执行结果";
+            this.rstx.UseVisualStyleBackColor = true;
+            this.rstx.Click += new System.EventHandler(this.rstx_Click);
+            // 
+            // groupSearch
+            // 
+            this.groupSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupSearch.Controls.Add(this.managerBox);
+            this.groupSearch.Controls.Add(this.searchContentTxt);
+            this.groupSearch.Controls.Add(this.subNameBox);
+            this.groupSearch.Controls.Add(this.searchbtn);
+            this.groupSearch.Controls.Add(this.searchTypeBox);
+            this.groupSearch.Controls.Add(this.mainNameBox);
+            this.groupSearch.Location = new System.Drawing.Point(12, 75);
+            this.groupSearch.Name = "groupSearch";
+            this.groupSearch.Size = new System.Drawing.Size(1031, 55);
+            this.groupSearch.TabIndex = 1;
+            this.groupSearch.TabStop = false;
+            this.groupSearch.Text = "搜索";
+            // 
+            // managerBox
+            // 
+            this.managerBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.managerBox.FormattingEnabled = true;
+            this.managerBox.Items.AddRange(new object[] {
+            "负责人"});
+            this.managerBox.Location = new System.Drawing.Point(372, 21);
+            this.managerBox.Name = "managerBox";
+            this.managerBox.Size = new System.Drawing.Size(128, 20);
+            this.managerBox.TabIndex = 8;
+            // 
+            // searchContentTxt
+            // 
+            this.searchContentTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.searchContentTxt.Location = new System.Drawing.Point(718, 20);
+            this.searchContentTxt.Name = "searchContentTxt";
+            this.searchContentTxt.Size = new System.Drawing.Size(183, 21);
+            this.searchContentTxt.TabIndex = 7;
+            // 
+            // subNameBox
+            // 
+            this.subNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.subNameBox.FormattingEnabled = true;
+            this.subNameBox.Items.AddRange(new object[] {
+            "二级分类"});
+            this.subNameBox.Location = new System.Drawing.Point(195, 21);
+            this.subNameBox.Name = "subNameBox";
+            this.subNameBox.Size = new System.Drawing.Size(132, 20);
+            this.subNameBox.TabIndex = 1;
+            // 
+            // searchbtn
+            // 
+            this.searchbtn.Location = new System.Drawing.Point(927, 19);
+            this.searchbtn.Name = "searchbtn";
+            this.searchbtn.Size = new System.Drawing.Size(75, 23);
+            this.searchbtn.TabIndex = 6;
+            this.searchbtn.Text = "搜索";
+            this.searchbtn.UseVisualStyleBackColor = true;
+            this.searchbtn.Click += new System.EventHandler(this.searchbtn_Click);
+            // 
+            // searchTypeBox
+            // 
+            this.searchTypeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.searchTypeBox.FormattingEnabled = true;
+            this.searchTypeBox.Items.AddRange(new object[] {
+            "其它搜索条件",
+            "IP",
+            "资产名称",
+            "资产号"});
+            this.searchTypeBox.Location = new System.Drawing.Point(544, 21);
+            this.searchTypeBox.Name = "searchTypeBox";
+            this.searchTypeBox.Size = new System.Drawing.Size(115, 20);
+            this.searchTypeBox.TabIndex = 5;
+            // 
+            // mainNameBox
+            // 
+            this.mainNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.mainNameBox.FormattingEnabled = true;
+            this.mainNameBox.Items.AddRange(new object[] {
+            "一级分类"});
+            this.mainNameBox.Location = new System.Drawing.Point(36, 21);
+            this.mainNameBox.Name = "mainNameBox";
+            this.mainNameBox.Size = new System.Drawing.Size(120, 20);
+            this.mainNameBox.TabIndex = 0;
+            this.mainNameBox.SelectedIndexChanged += new System.EventHandler(this.mainNameBox_SelectedIndexChanged);
+            // 
+            // label_cmd_title
+            // 
+            this.label_cmd_title.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_cmd_title.AutoSize = true;
+            this.label_cmd_title.Location = new System.Drawing.Point(17, 31);
+            this.label_cmd_title.Name = "label_cmd_title";
+            this.label_cmd_title.Size = new System.Drawing.Size(41, 12);
+            this.label_cmd_title.TabIndex = 2;
+            this.label_cmd_title.Text = "命令：";
+            // 
+            // cmdtext
+            // 
+            this.cmdtext.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdtext.Location = new System.Drawing.Point(72, 26);
+            this.cmdtext.Name = "cmdtext";
+            this.cmdtext.Size = new System.Drawing.Size(808, 21);
+            this.cmdtext.TabIndex = 3;
+            // 
+            // execbtn
+            // 
+            this.execbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.execbtn.Location = new System.Drawing.Point(898, 24);
+            this.execbtn.Name = "execbtn";
+            this.execbtn.Size = new System.Drawing.Size(100, 23);
+            this.execbtn.TabIndex = 4;
+            this.execbtn.Text = "执行";
+            this.execbtn.UseVisualStyleBackColor = true;
+            this.execbtn.Click += new System.EventHandler(this.execbtn_Click);
+            // 
+            // groupAction
+            // 
+            this.groupAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupAction.Controls.Add(this.cmdtext);
+            this.groupAction.Controls.Add(this.execbtn);
+            this.groupAction.Controls.Add(this.label_cmd_title);
+            this.groupAction.Location = new System.Drawing.Point(12, 576);
+            this.groupAction.Name = "groupAction";
+            this.groupAction.Size = new System.Drawing.Size(1031, 65);
+            this.groupAction.TabIndex = 2;
+            this.groupAction.TabStop = false;
+            this.groupAction.Text = "操作";
+            // 
+            // rsttitle
+            // 
+            this.rsttitle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rsttitle.Controls.Add(this.rst);
+            this.rsttitle.Controls.Add(this.rstx);
+            this.rsttitle.Location = new System.Drawing.Point(843, 150);
+            this.rsttitle.Name = "rsttitle";
+            this.rsttitle.Size = new System.Drawing.Size(200, 420);
+            this.rsttitle.TabIndex = 4;
+            this.rsttitle.TabStop = false;
+            this.rsttitle.Text = "Result:";
+            // 
+            // rst
+            // 
+            this.rst.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rst.Location = new System.Drawing.Point(6, 26);
+            this.rst.Multiline = true;
+            this.rst.Name = "rst";
+            this.rst.Size = new System.Drawing.Size(188, 347);
+            this.rst.TabIndex = 6;
+            // 
+            // reloginbtn
+            // 
+            this.reloginbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reloginbtn.AutoSize = true;
+            this.reloginbtn.BackColor = System.Drawing.Color.Transparent;
+            this.reloginbtn.ForeColor = System.Drawing.Color.White;
+            this.reloginbtn.Location = new System.Drawing.Point(892, 40);
+            this.reloginbtn.Name = "reloginbtn";
+            this.reloginbtn.Size = new System.Drawing.Size(65, 12);
+            this.reloginbtn.TabIndex = 5;
+            this.reloginbtn.Text = "(重新登录)";
+            this.reloginbtn.Click += new System.EventHandler(this.reloginbtn_Click);
+            // 
+            // aboutbtn
+            // 
+            this.aboutbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.aboutbtn.AutoSize = true;
+            this.aboutbtn.BackColor = System.Drawing.Color.Transparent;
+            this.aboutbtn.ForeColor = System.Drawing.Color.White;
+            this.aboutbtn.Location = new System.Drawing.Point(969, 40);
+            this.aboutbtn.Name = "aboutbtn";
+            this.aboutbtn.Size = new System.Drawing.Size(83, 12);
+            this.aboutbtn.TabIndex = 6;
+            this.aboutbtn.Text = "关于Bumblebee";
+            this.aboutbtn.Click += new System.EventHandler(this.aboutbtn_Click);
+            // 
+            // usernameLabel
+            // 
+            this.usernameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.usernameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.usernameLabel.ForeColor = System.Drawing.Color.White;
+            this.usernameLabel.Location = new System.Drawing.Point(644, 40);
+            this.usernameLabel.Name = "usernameLabel";
+            this.usernameLabel.Size = new System.Drawing.Size(248, 12);
+            this.usernameLabel.TabIndex = 7;
+            this.usernameLabel.Text = "u";
+            this.usernameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // ck_column
             // 
             this.ck_column.HeaderText = "";
-            this.ck_column.MinimumWidth = 45;
+            this.ck_column.MinimumWidth = 40;
             this.ck_column.Name = "ck_column";
             this.ck_column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ck_column.Width = 45;
+            this.ck_column.Width = 40;
             // 
             // AgentIp
             // 
@@ -193,15 +363,31 @@
             this.AgentIp.ReadOnly = true;
             this.AgentIp.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
             // 
+            // rflag
+            // 
+            this.rflag.DataPropertyName = "rflag";
+            this.rflag.HeaderText = "状态";
+            this.rflag.Name = "rflag";
+            this.rflag.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.rflag.Width = 40;
+            // 
             // Result
             // 
+            this.Result.DataPropertyName = "Result";
             this.Result.FillWeight = 350F;
-            this.Result.HeaderText = "结果";
-            this.Result.MinimumWidth = 350;
+            this.Result.HeaderText = "返回值";
+            this.Result.MinimumWidth = 50;
             this.Result.Name = "Result";
             this.Result.ReadOnly = true;
             this.Result.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.Result.Width = 350;
+            this.Result.Width = 195;
+            // 
+            // rstfull
+            // 
+            this.rstfull.HeaderText = "rstfull";
+            this.rstfull.Name = "rstfull";
+            this.rstfull.ReadOnly = true;
+            this.rstfull.Visible = false;
             // 
             // AgentName
             // 
@@ -258,228 +444,27 @@
             this.SubName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
             this.SubName.Width = 80;
             // 
-            // rstx
-            // 
-            this.rstx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.rstx.Location = new System.Drawing.Point(149, 523);
-            this.rstx.Name = "rstx";
-            this.rstx.Size = new System.Drawing.Size(90, 23);
-            this.rstx.TabIndex = 5;
-            this.rstx.Text = "复制执行结果";
-            this.rstx.UseVisualStyleBackColor = true;
-            this.rstx.Click += new System.EventHandler(this.rstx_Click);
-            // 
-            // groupSearch
-            // 
-            this.groupSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupSearch.Controls.Add(this.managerBox);
-            this.groupSearch.Controls.Add(this.searchContentTxt);
-            this.groupSearch.Controls.Add(this.subNameBox);
-            this.groupSearch.Controls.Add(this.searchbtn);
-            this.groupSearch.Controls.Add(this.searchTypeBox);
-            this.groupSearch.Controls.Add(this.mainNameBox);
-            this.groupSearch.Location = new System.Drawing.Point(12, 31);
-            this.groupSearch.Name = "groupSearch";
-            this.groupSearch.Size = new System.Drawing.Size(1162, 55);
-            this.groupSearch.TabIndex = 1;
-            this.groupSearch.TabStop = false;
-            this.groupSearch.Text = "搜索";
-            // 
-            // managerBox
-            // 
-            this.managerBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.managerBox.FormattingEnabled = true;
-            this.managerBox.Items.AddRange(new object[] {
-            "负责人"});
-            this.managerBox.Location = new System.Drawing.Point(338, 23);
-            this.managerBox.Name = "managerBox";
-            this.managerBox.Size = new System.Drawing.Size(128, 20);
-            this.managerBox.TabIndex = 8;
-            // 
-            // searchContentTxt
-            // 
-            this.searchContentTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.searchContentTxt.Location = new System.Drawing.Point(636, 23);
-            this.searchContentTxt.Name = "searchContentTxt";
-            this.searchContentTxt.Size = new System.Drawing.Size(183, 21);
-            this.searchContentTxt.TabIndex = 7;
-            // 
-            // subNameBox
-            // 
-            this.subNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.subNameBox.FormattingEnabled = true;
-            this.subNameBox.Items.AddRange(new object[] {
-            "二级分类"});
-            this.subNameBox.Location = new System.Drawing.Point(181, 22);
-            this.subNameBox.Name = "subNameBox";
-            this.subNameBox.Size = new System.Drawing.Size(132, 20);
-            this.subNameBox.TabIndex = 1;
-            // 
-            // searchbtn
-            // 
-            this.searchbtn.Location = new System.Drawing.Point(851, 21);
-            this.searchbtn.Name = "searchbtn";
-            this.searchbtn.Size = new System.Drawing.Size(75, 23);
-            this.searchbtn.TabIndex = 6;
-            this.searchbtn.Text = "搜索";
-            this.searchbtn.UseVisualStyleBackColor = true;
-            this.searchbtn.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // searchTypeBox
-            // 
-            this.searchTypeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.searchTypeBox.FormattingEnabled = true;
-            this.searchTypeBox.Items.AddRange(new object[] {
-            "其它搜索条件",
-            "IP",
-            "资产名称",
-            "资产号"});
-            this.searchTypeBox.Location = new System.Drawing.Point(497, 24);
-            this.searchTypeBox.Name = "searchTypeBox";
-            this.searchTypeBox.Size = new System.Drawing.Size(115, 20);
-            this.searchTypeBox.TabIndex = 5;
-            // 
-            // mainNameBox
-            // 
-            this.mainNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.mainNameBox.FormattingEnabled = true;
-            this.mainNameBox.Items.AddRange(new object[] {
-            "一级分类"});
-            this.mainNameBox.Location = new System.Drawing.Point(34, 22);
-            this.mainNameBox.Name = "mainNameBox";
-            this.mainNameBox.Size = new System.Drawing.Size(120, 20);
-            this.mainNameBox.TabIndex = 0;
-            this.mainNameBox.SelectedIndexChanged += new System.EventHandler(this.mainNameBox_SelectedIndexChanged);
-            // 
-            // label_cmd_title
-            // 
-            this.label_cmd_title.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_cmd_title.AutoSize = true;
-            this.label_cmd_title.Location = new System.Drawing.Point(16, 29);
-            this.label_cmd_title.Name = "label_cmd_title";
-            this.label_cmd_title.Size = new System.Drawing.Size(41, 12);
-            this.label_cmd_title.TabIndex = 2;
-            this.label_cmd_title.Text = "命令：";
-            // 
-            // cmdtext
-            // 
-            this.cmdtext.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdtext.Location = new System.Drawing.Point(72, 26);
-            this.cmdtext.Name = "cmdtext";
-            this.cmdtext.Size = new System.Drawing.Size(939, 21);
-            this.cmdtext.TabIndex = 3;
-            // 
-            // execbtn
-            // 
-            this.execbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.execbtn.Location = new System.Drawing.Point(1043, 26);
-            this.execbtn.Name = "execbtn";
-            this.execbtn.Size = new System.Drawing.Size(75, 23);
-            this.execbtn.TabIndex = 4;
-            this.execbtn.Text = "执行";
-            this.execbtn.UseVisualStyleBackColor = true;
-            this.execbtn.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // groupAction
-            // 
-            this.groupAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupAction.Controls.Add(this.cmdtext);
-            this.groupAction.Controls.Add(this.execbtn);
-            this.groupAction.Controls.Add(this.label_cmd_title);
-            this.groupAction.Location = new System.Drawing.Point(12, 660);
-            this.groupAction.Name = "groupAction";
-            this.groupAction.Size = new System.Drawing.Size(1162, 65);
-            this.groupAction.TabIndex = 2;
-            this.groupAction.TabStop = false;
-            this.groupAction.Text = "操作";
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.AutomaticDelay = 0;
-            this.toolTip1.BackColor = System.Drawing.SystemColors.Control;
-            this.toolTip1.OwnerDraw = true;
-            this.toolTip1.ShowAlways = true;
-            this.toolTip1.Draw += new System.Windows.Forms.DrawToolTipEventHandler(this.toolTip1_Draw);
-            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loginStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 746);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1195, 23);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // loginStatusLabel
-            // 
-            this.loginStatusLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
-            this.loginStatusLabel.Margin = new System.Windows.Forms.Padding(0, 1, 1, 1);
-            this.loginStatusLabel.Name = "loginStatusLabel";
-            this.loginStatusLabel.Size = new System.Drawing.Size(71, 21);
-            this.loginStatusLabel.Text = "  登录帐号:";
-            this.loginStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // rsttitle
-            // 
-            this.rsttitle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rsttitle.Controls.Add(this.rst);
-            this.rsttitle.Controls.Add(this.rstx);
-            this.rsttitle.Location = new System.Drawing.Point(929, 89);
-            this.rsttitle.Name = "rsttitle";
-            this.rsttitle.Size = new System.Drawing.Size(245, 556);
-            this.rsttitle.TabIndex = 4;
-            this.rsttitle.TabStop = false;
-            this.rsttitle.Text = "Result:";
-            // 
-            // rst
-            // 
-            this.rst.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rst.Location = new System.Drawing.Point(6, 26);
-            this.rst.Multiline = true;
-            this.rst.Name = "rst";
-            this.rst.Size = new System.Drawing.Size(233, 483);
-            this.rst.TabIndex = 6;
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1195, 769);
+            this.ClientSize = new System.Drawing.Size(1064, 653);
+            this.Controls.Add(this.usernameLabel);
+            this.Controls.Add(this.aboutbtn);
+            this.Controls.Add(this.reloginbtn);
             this.Controls.Add(this.rsttitle);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupAction);
             this.Controls.Add(this.groupSearch);
             this.Controls.Add(this.serverlist);
-            this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip;
+            this.MinimumSize = new System.Drawing.Size(1064, 653);
             this.Name = "MainWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BumblebeeClient";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainWindow_FormClosed);
             this.Load += new System.EventHandler(this.MainWindow_Load);
-            this.menuStrip.ResumeLayout(false);
-            this.menuStrip.PerformLayout();
             this.serverlist.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.agentDataGrid)).EndInit();
             this.groupSearch.ResumeLayout(false);
@@ -487,8 +472,6 @@
             this.groupAction.ResumeLayout(false);
             this.groupAction.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.agentInfoBindingSource)).EndInit();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.rsttitle.ResumeLayout(false);
             this.rsttitle.PerformLayout();
             this.ResumeLayout(false);
@@ -497,10 +480,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ToolStripMenuItem HelpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem AbloutElvesToolStripMenuItem;
         private System.Windows.Forms.GroupBox serverlist;
         private System.Windows.Forms.DataGridView agentDataGrid;
         private System.Windows.Forms.GroupBox groupSearch;
@@ -516,22 +495,24 @@
         private System.Windows.Forms.GroupBox groupAction;
         private System.Windows.Forms.Button selectall;
         private System.Windows.Forms.Button selectrev;
-        private System.Windows.Forms.ToolStripMenuItem ReloginToolStripMenuItem;
         private System.Windows.Forms.BindingSource agentInfoBindingSource;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel loginStatusLabel;
+        private System.Windows.Forms.Button rstx;
+        private System.Windows.Forms.GroupBox rsttitle;
+        private System.Windows.Forms.TextBox rst;
+        private System.Windows.Forms.Label reloginbtn;
+        private System.Windows.Forms.Label aboutbtn;
+        private System.Windows.Forms.Label usernameLabel;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ck_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn AgentIp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rflag;
         private System.Windows.Forms.DataGridViewTextBoxColumn Result;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rstfull;
         private System.Windows.Forms.DataGridViewTextBoxColumn AgentName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Asset;
         private System.Windows.Forms.DataGridViewTextBoxColumn Manager;
         private System.Windows.Forms.DataGridViewTextBoxColumn MainName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SubName;
-        private System.Windows.Forms.Button rstx;
-        private System.Windows.Forms.GroupBox rsttitle;
-        private System.Windows.Forms.TextBox rst;
     }
 }
 

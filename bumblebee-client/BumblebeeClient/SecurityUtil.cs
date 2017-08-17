@@ -10,23 +10,21 @@ namespace BumblebeeClient
     class SecurityUtil
     {
 
-
         public static string GetTimestamp() 
         {
             TimeSpan ts2 = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(ts2.TotalSeconds).ToString();
         }
 
-        public static string CreateSign(Dictionary<string, string> param)
+        public static string CreateSign(Dictionary<string, string> param, string signkey="")
         {
+            signkey = signkey.ToUpper();
             if (param == null || param.Count == 0)
             {
                 return null;
             }
             StringBuilder sb = new StringBuilder();
-
             Dictionary<string, string> order = param.OrderBy(i => i.Key).ToDictionary(i=>i.Key,i=>i.Value);
-            
             foreach(string k in order.Keys)
             {
                 sb.Append(k);
@@ -36,9 +34,12 @@ namespace BumblebeeClient
             }
             if (order.Count > 0) 
             {
-                return CreateMD5Hash(sb.ToString().Substring(0, sb.Length - 1));
+                Console.Write(sb.ToString() + signkey);
+                return CreateMD5Hash(sb.ToString().Substring(0, sb.Length - 1) + signkey);
             }
-            return CreateMD5Hash(sb.ToString());
+            //return sb.ToString() + signkey;
+            //Console.Write(sb.ToString() + signkey);
+            return CreateMD5Hash(sb.ToString()+ signkey);
         }
 
         public static string CreateMD5Hash(string input)

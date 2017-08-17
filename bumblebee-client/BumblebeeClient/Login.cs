@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace BumblebeeClient
 {
-    public partial class Login : Form
+    public partial class Login : MaterialForm
     {
+        private readonly MaterialSkinManager materialSkinManager;
+
+        public static String EMAIL;
+        public static String PWDKEY;
 
         public Login()
         {
             InitializeComponent();
-           
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void login_btn_Click(object sender, EventArgs e)
         {
             
             string account = this.account_txt.Text;
@@ -42,10 +46,14 @@ namespace BumblebeeClient
             this.login_btn.Enabled = false;
 
             Dictionary<string, string> pm = new Dictionary<string, string>();
-            pm.Add("email", account);
-            pm.Add("pwd", pwd);
+            
+            Login.EMAIL  = account;
+            Login.PWDKEY = SecurityUtil.CreateMD5Hash(pwd);
+            //Login.PWDKEY = "";
+            pm.Add("email", Login.EMAIL);
+            //pm.Add("pwd", pwd);
             pm.Add("timestamp",SecurityUtil.GetTimestamp());
-            string sign=SecurityUtil.CreateSign(pm);
+            string sign=SecurityUtil.CreateSign(pm, Login.PWDKEY);
             pm.Add("sign",sign);
             try
             {
@@ -56,7 +64,7 @@ namespace BumblebeeClient
                 }
                 else if ("success".Equals(result))
                 {
-                    MainWindow main = new MainWindow(this, account);
+                    MainWindow main = new MainWindow(this);
                     main.StartPosition = FormStartPosition.Manual;
                     int xWidth = SystemInformation.PrimaryMonitorSize.Width;
                     int yHeight = SystemInformation.PrimaryMonitorSize.Height;
@@ -85,11 +93,6 @@ namespace BumblebeeClient
             }     
         }
 
-        private void Login_Load(object sender, EventArgs e)
-        {
-           
-        }
-
         private void Login_FormClosed(object sender, FormClosedEventArgs e)
         {
             System.Environment.Exit(0);
@@ -109,18 +112,18 @@ namespace BumblebeeClient
             
             if (e.KeyCode == Keys.Enter)//判断回车键
             {
-                this.button1_Click(sender, e);
+                this.login_btn_Click(sender, e);
             }
-        }
-
-        private void Login_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            
         }
 
         private void Login_Activated(object sender, EventArgs e)
         {
             this.account_txt.Focus();
+        }
+
+        private void enterwebcontrol_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(ConstantUrl.url);
         }
     }
 }
