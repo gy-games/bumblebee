@@ -35,16 +35,6 @@
             this.selectrev = new System.Windows.Forms.Button();
             this.selectall = new System.Windows.Forms.Button();
             this.agentDataGrid = new System.Windows.Forms.DataGridView();
-            this.ck_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.AgentIp = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rflag = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rstfull = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AgentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Asset = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SubName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rstx = new System.Windows.Forms.Button();
             this.groupSearch = new System.Windows.Forms.GroupBox();
             this.managerBox = new System.Windows.Forms.ComboBox();
@@ -64,6 +54,18 @@
             this.reloginbtn = new System.Windows.Forms.Label();
             this.aboutbtn = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
+            this.ck_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.AgentIp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rflag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rstfull = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AgentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Asset = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SubName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shell = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Os = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.serverlist.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.agentDataGrid)).BeginInit();
             this.groupSearch.SuspendLayout();
@@ -82,7 +84,7 @@
             this.serverlist.Controls.Add(this.agentDataGrid);
             this.serverlist.Location = new System.Drawing.Point(12, 150);
             this.serverlist.Name = "serverlist";
-            this.serverlist.Size = new System.Drawing.Size(819, 420);
+            this.serverlist.Size = new System.Drawing.Size(853, 420);
             this.serverlist.TabIndex = 0;
             this.serverlist.TabStop = false;
             this.serverlist.Text = "服务器列表 总数:0";
@@ -90,7 +92,7 @@
             // execStatus
             // 
             this.execStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.execStatus.Location = new System.Drawing.Point(532, 386);
+            this.execStatus.Location = new System.Drawing.Point(566, 386);
             this.execStatus.Name = "execStatus";
             this.execStatus.Size = new System.Drawing.Size(280, 23);
             this.execStatus.TabIndex = 3;
@@ -131,125 +133,30 @@
             this.ck_column,
             this.AgentIp,
             this.rflag,
-            this.Result,
+            this.rResult,
             this.rstfull,
             this.AgentName,
             this.Asset,
             this.Manager,
             this.MainName,
-            this.SubName});
+            this.SubName,
+            this.shell,
+            this.Os});
             this.agentDataGrid.Location = new System.Drawing.Point(18, 29);
             this.agentDataGrid.Name = "agentDataGrid";
             this.agentDataGrid.RowTemplate.Height = 23;
             this.agentDataGrid.ShowCellToolTips = false;
             this.agentDataGrid.ShowEditingIcon = false;
-            this.agentDataGrid.Size = new System.Drawing.Size(795, 347);
+            this.agentDataGrid.Size = new System.Drawing.Size(829, 347);
             this.agentDataGrid.TabIndex = 0;
             this.agentDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.agentDataGrid_CellContentClick);
             this.agentDataGrid.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.agentDataGrid_ColumnHeaderMouseClick);
             this.agentDataGrid.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.agentDataGrid_RowPostPaint);
             // 
-            // ck_column
-            // 
-            this.ck_column.HeaderText = "";
-            this.ck_column.MinimumWidth = 40;
-            this.ck_column.Name = "ck_column";
-            this.ck_column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ck_column.Width = 40;
-            // 
-            // AgentIp
-            // 
-            this.AgentIp.DataPropertyName = "AgentIp";
-            this.AgentIp.HeaderText = "IP";
-            this.AgentIp.Name = "AgentIp";
-            this.AgentIp.ReadOnly = true;
-            this.AgentIp.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            // 
-            // rflag
-            // 
-            this.rflag.DataPropertyName = "rflag";
-            this.rflag.HeaderText = "状态";
-            this.rflag.Name = "rflag";
-            this.rflag.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.rflag.Width = 40;
-            // 
-            // Result
-            // 
-            this.Result.DataPropertyName = "Result";
-            this.Result.FillWeight = 350F;
-            this.Result.HeaderText = "返回值";
-            this.Result.MinimumWidth = 50;
-            this.Result.Name = "Result";
-            this.Result.ReadOnly = true;
-            this.Result.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.Result.Width = 195;
-            // 
-            // rstfull
-            // 
-            this.rstfull.HeaderText = "rstfull";
-            this.rstfull.Name = "rstfull";
-            this.rstfull.ReadOnly = true;
-            this.rstfull.Visible = false;
-            // 
-            // AgentName
-            // 
-            this.AgentName.DataPropertyName = "AgentName";
-            this.AgentName.FillWeight = 80F;
-            this.AgentName.HeaderText = "资产名称";
-            this.AgentName.MinimumWidth = 80;
-            this.AgentName.Name = "AgentName";
-            this.AgentName.ReadOnly = true;
-            this.AgentName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.AgentName.Width = 80;
-            // 
-            // Asset
-            // 
-            this.Asset.DataPropertyName = "Asset";
-            this.Asset.FillWeight = 60F;
-            this.Asset.HeaderText = "资产号";
-            this.Asset.MinimumWidth = 60;
-            this.Asset.Name = "Asset";
-            this.Asset.ReadOnly = true;
-            this.Asset.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.Asset.Width = 60;
-            // 
-            // Manager
-            // 
-            this.Manager.DataPropertyName = "Manager";
-            this.Manager.FillWeight = 60F;
-            this.Manager.HeaderText = "负责人";
-            this.Manager.MinimumWidth = 60;
-            this.Manager.Name = "Manager";
-            this.Manager.ReadOnly = true;
-            this.Manager.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.Manager.Width = 60;
-            // 
-            // MainName
-            // 
-            this.MainName.DataPropertyName = "MainName";
-            this.MainName.FillWeight = 80F;
-            this.MainName.HeaderText = "一级分类";
-            this.MainName.MinimumWidth = 80;
-            this.MainName.Name = "MainName";
-            this.MainName.ReadOnly = true;
-            this.MainName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.MainName.Width = 80;
-            // 
-            // SubName
-            // 
-            this.SubName.DataPropertyName = "SubName";
-            this.SubName.FillWeight = 80F;
-            this.SubName.HeaderText = "二级分类";
-            this.SubName.MinimumWidth = 80;
-            this.SubName.Name = "SubName";
-            this.SubName.ReadOnly = true;
-            this.SubName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.SubName.Width = 80;
-            // 
             // rstx
             // 
             this.rstx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.rstx.Location = new System.Drawing.Point(104, 387);
+            this.rstx.Location = new System.Drawing.Point(124, 387);
             this.rstx.Name = "rstx";
             this.rstx.Size = new System.Drawing.Size(90, 23);
             this.rstx.TabIndex = 5;
@@ -269,7 +176,7 @@
             this.groupSearch.Controls.Add(this.mainNameBox);
             this.groupSearch.Location = new System.Drawing.Point(12, 75);
             this.groupSearch.Name = "groupSearch";
-            this.groupSearch.Size = new System.Drawing.Size(1031, 55);
+            this.groupSearch.Size = new System.Drawing.Size(1079, 55);
             this.groupSearch.TabIndex = 1;
             this.groupSearch.TabStop = false;
             this.groupSearch.Text = "搜索";
@@ -325,7 +232,7 @@
             this.searchTypeBox.Items.AddRange(new object[] {
             "其它搜索条件",
             "IP",
-            "资产名称",
+            "应用",
             "资产号"});
             this.searchTypeBox.Location = new System.Drawing.Point(544, 21);
             this.searchTypeBox.Name = "searchTypeBox";
@@ -364,14 +271,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdtext.Location = new System.Drawing.Point(72, 26);
             this.cmdtext.Name = "cmdtext";
-            this.cmdtext.Size = new System.Drawing.Size(808, 21);
+            this.cmdtext.Size = new System.Drawing.Size(880, 21);
             this.cmdtext.TabIndex = 3;
             // 
             // execbtn
             // 
             this.execbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.execbtn.Location = new System.Drawing.Point(898, 24);
+            this.execbtn.Location = new System.Drawing.Point(970, 24);
             this.execbtn.Name = "execbtn";
             this.execbtn.Size = new System.Drawing.Size(100, 23);
             this.execbtn.TabIndex = 4;
@@ -388,7 +295,7 @@
             this.groupAction.Controls.Add(this.label_cmd_title);
             this.groupAction.Location = new System.Drawing.Point(12, 576);
             this.groupAction.Name = "groupAction";
-            this.groupAction.Size = new System.Drawing.Size(1031, 65);
+            this.groupAction.Size = new System.Drawing.Size(1079, 65);
             this.groupAction.TabIndex = 2;
             this.groupAction.TabStop = false;
             this.groupAction.Text = "操作";
@@ -400,9 +307,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rsttitle.Controls.Add(this.rst);
             this.rsttitle.Controls.Add(this.rstx);
-            this.rsttitle.Location = new System.Drawing.Point(843, 150);
+            this.rsttitle.Location = new System.Drawing.Point(871, 150);
             this.rsttitle.Name = "rsttitle";
-            this.rsttitle.Size = new System.Drawing.Size(200, 420);
+            this.rsttitle.Size = new System.Drawing.Size(220, 420);
             this.rsttitle.TabIndex = 4;
             this.rsttitle.TabStop = false;
             this.rsttitle.Text = "Result:";
@@ -416,7 +323,7 @@
             this.rst.Multiline = true;
             this.rst.Name = "rst";
             this.rst.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.rst.Size = new System.Drawing.Size(188, 347);
+            this.rst.Size = new System.Drawing.Size(208, 347);
             this.rst.TabIndex = 6;
             // 
             // reloginbtn
@@ -425,7 +332,7 @@
             this.reloginbtn.AutoSize = true;
             this.reloginbtn.BackColor = System.Drawing.Color.Transparent;
             this.reloginbtn.ForeColor = System.Drawing.Color.White;
-            this.reloginbtn.Location = new System.Drawing.Point(892, 40);
+            this.reloginbtn.Location = new System.Drawing.Point(940, 40);
             this.reloginbtn.Name = "reloginbtn";
             this.reloginbtn.Size = new System.Drawing.Size(65, 12);
             this.reloginbtn.TabIndex = 5;
@@ -438,7 +345,7 @@
             this.aboutbtn.AutoSize = true;
             this.aboutbtn.BackColor = System.Drawing.Color.Transparent;
             this.aboutbtn.ForeColor = System.Drawing.Color.White;
-            this.aboutbtn.Location = new System.Drawing.Point(969, 40);
+            this.aboutbtn.Location = new System.Drawing.Point(1017, 40);
             this.aboutbtn.Name = "aboutbtn";
             this.aboutbtn.Size = new System.Drawing.Size(83, 12);
             this.aboutbtn.TabIndex = 6;
@@ -450,19 +357,131 @@
             this.usernameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.usernameLabel.BackColor = System.Drawing.Color.Transparent;
             this.usernameLabel.ForeColor = System.Drawing.Color.White;
-            this.usernameLabel.Location = new System.Drawing.Point(644, 40);
+            this.usernameLabel.Location = new System.Drawing.Point(692, 40);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(248, 12);
             this.usernameLabel.TabIndex = 7;
             this.usernameLabel.Text = "u";
             this.usernameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // ck_column
+            // 
+            this.ck_column.HeaderText = "";
+            this.ck_column.MinimumWidth = 30;
+            this.ck_column.Name = "ck_column";
+            this.ck_column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ck_column.Width = 30;
+            // 
+            // AgentIp
+            // 
+            this.AgentIp.DataPropertyName = "AgentIp";
+            this.AgentIp.HeaderText = "IP";
+            this.AgentIp.Name = "AgentIp";
+            this.AgentIp.ReadOnly = true;
+            this.AgentIp.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            // 
+            // rflag
+            // 
+            this.rflag.DataPropertyName = "rflag";
+            this.rflag.HeaderText = "状态";
+            this.rflag.Name = "rflag";
+            this.rflag.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.rflag.Width = 40;
+            // 
+            // rResult
+            // 
+            this.rResult.DataPropertyName = "rResult";
+            this.rResult.FillWeight = 350F;
+            this.rResult.HeaderText = "返回值";
+            this.rResult.MinimumWidth = 50;
+            this.rResult.Name = "rResult";
+            this.rResult.ReadOnly = true;
+            this.rResult.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.rResult.Width = 170;
+            // 
+            // rstfull
+            // 
+            this.rstfull.HeaderText = "rstfull";
+            this.rstfull.Name = "rstfull";
+            this.rstfull.ReadOnly = true;
+            this.rstfull.Visible = false;
+            // 
+            // AgentName
+            // 
+            this.AgentName.DataPropertyName = "AgentName";
+            this.AgentName.FillWeight = 80F;
+            this.AgentName.HeaderText = "应用";
+            this.AgentName.Name = "AgentName";
+            this.AgentName.ReadOnly = true;
+            this.AgentName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.AgentName.Width = 75;
+            // 
+            // Asset
+            // 
+            this.Asset.DataPropertyName = "Asset";
+            this.Asset.FillWeight = 60F;
+            this.Asset.HeaderText = "资产号";
+            this.Asset.Name = "Asset";
+            this.Asset.ReadOnly = true;
+            this.Asset.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.Asset.Width = 60;
+            // 
+            // Manager
+            // 
+            this.Manager.DataPropertyName = "Manager";
+            this.Manager.FillWeight = 60F;
+            this.Manager.HeaderText = "负责人";
+            this.Manager.Name = "Manager";
+            this.Manager.ReadOnly = true;
+            this.Manager.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.Manager.Width = 60;
+            // 
+            // MainName
+            // 
+            this.MainName.DataPropertyName = "MainName";
+            this.MainName.FillWeight = 80F;
+            this.MainName.HeaderText = "一级分类";
+            this.MainName.Name = "MainName";
+            this.MainName.ReadOnly = true;
+            this.MainName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.MainName.Width = 75;
+            // 
+            // SubName
+            // 
+            this.SubName.DataPropertyName = "SubName";
+            this.SubName.FillWeight = 80F;
+            this.SubName.HeaderText = "二级分类";
+            this.SubName.Name = "SubName";
+            this.SubName.ReadOnly = true;
+            this.SubName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.SubName.Width = 75;
+            // 
+            // shell
+            // 
+            this.shell.DataPropertyName = "conn";
+            this.shell.HeaderText = "SHELL";
+            this.shell.Name = "shell";
+            this.shell.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.shell.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.shell.Text = "连接";
+            this.shell.ToolTipText = "连接";
+            this.shell.UseColumnTextForButtonValue = true;
+            this.shell.Visible = false;
+            this.shell.Width = 45;
+            // 
+            // Os
+            // 
+            this.Os.DataPropertyName = "Os";
+            this.Os.HeaderText = "操作系统";
+            this.Os.Name = "Os";
+            this.Os.Width = 80;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1064, 653);
+            this.ClientSize = new System.Drawing.Size(1112, 653);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.aboutbtn);
             this.Controls.Add(this.reloginbtn);
@@ -472,7 +491,7 @@
             this.Controls.Add(this.serverlist);
             this.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1064, 653);
+            this.MinimumSize = new System.Drawing.Size(1112, 653);
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BumblebeeClient";
@@ -517,17 +536,19 @@
         private System.Windows.Forms.Label reloginbtn;
         private System.Windows.Forms.Label aboutbtn;
         private System.Windows.Forms.Label usernameLabel;
+        private System.Windows.Forms.Label execStatus;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ck_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn AgentIp;
         private System.Windows.Forms.DataGridViewTextBoxColumn rflag;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Result;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rResult;
         private System.Windows.Forms.DataGridViewTextBoxColumn rstfull;
         private System.Windows.Forms.DataGridViewTextBoxColumn AgentName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Asset;
         private System.Windows.Forms.DataGridViewTextBoxColumn Manager;
         private System.Windows.Forms.DataGridViewTextBoxColumn MainName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SubName;
-        private System.Windows.Forms.Label execStatus;
+        private System.Windows.Forms.DataGridViewButtonColumn shell;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Os;
     }
 }
 

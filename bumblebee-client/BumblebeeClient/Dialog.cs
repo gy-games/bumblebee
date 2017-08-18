@@ -8,6 +8,7 @@ namespace BumblebeeClient
         public About()
         {
             InitializeComponent();
+            this.intro_label1.Text = "Bumblebee(大黄蜂)运维工具(" + Login.VERSION + ")";
         }
 
         private void label1_Click(object sender, EventArgs e)

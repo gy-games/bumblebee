@@ -10,6 +10,22 @@
             set { agentIp = value; }
         }
 
+        private string rflag;
+
+        public string Rflag
+        {
+            get { return rflag; }
+            set { rflag = value; }
+        }
+
+        private string rResult;
+
+        public string RResult
+        {
+            get { return rResult; }
+            set { rResult = value; }
+        }
+
         private string agentName;
 
         public string AgentName
@@ -48,6 +64,14 @@
         {
             get { return subName; }
             set { subName = value; }
+        }
+
+        private string os;
+
+        public string Os
+        {
+            get { return os; }
+            set { os = value; }
         }
 
     }

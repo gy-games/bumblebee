@@ -8,6 +8,7 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using System.Diagnostics;
 
 namespace BumblebeeClient
 {
@@ -77,14 +78,14 @@ namespace BumblebeeClient
             int cnt = 0;
             try
             {
-                
                 string result2 = HttpUtil.SendGet(ConstantUrl.agentListUrl, pm2);
                 if (!string.IsNullOrEmpty(result2))
                 {
                     List<AgentInfo> data2 = JsonConvert.DeserializeObject<List<AgentInfo>>(result2);
+                    //foreach data2
                     DataTable dt = DataTableExtensions.ToDataTable(data2);
-                    dt.Columns.Add("rflag", typeof(String));
-                    dt.Columns.Add("Result", typeof(String));
+                    //dt.Columns.Add("rflag", typeof(String));
+                    //dt.Columns.Add("Result", typeof(String));
                     this.agentDataGrid.DataSource = dt;
                     cnt= data2.Count;
                 }
@@ -136,7 +137,7 @@ namespace BumblebeeClient
                 {
                     pm.Add("agentIp", searchContent);
                 }
-                else if ("资产名称".Equals(searchType))
+                else if ("应用".Equals(searchType))
                 {
                     pm.Add("agentName", searchContent);
                 }
@@ -159,8 +160,8 @@ namespace BumblebeeClient
                 {
                     List<AgentInfo> data2 = JsonConvert.DeserializeObject<List<AgentInfo>>(result);
                     DataTable dt = DataTableExtensions.ToDataTable(data2);
-                    dt.Columns.Add("rflag", typeof(String));
-                    dt.Columns.Add("Result", typeof(String));
+                    //dt.Columns.Add("rflag", typeof(String));
+                    //dt.Columns.Add("Result", typeof(String));
                     this.agentDataGrid.DataSource = dt;
                     cnt = data2.Count;
                 }
@@ -268,7 +269,7 @@ namespace BumblebeeClient
                                         //返回结果为空
                                         row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
                                         row.Cells["rflag"].Value = "异常";
-                                        row.Cells["Result"].Value = "Bumblebee Server返回结果为空！";
+                                        row.Cells["rResult"].Value = "Bumblebee Server返回结果为空！";
                                         failcnt++;
                                     }
                                     else
@@ -297,7 +298,7 @@ namespace BumblebeeClient
                                         {
                                             miniValue = Unicode2String(data["data"].ToString());
                                         }
-                                        row.Cells["Result"].Value  = miniValue;
+                                        row.Cells["rResult"].Value  = miniValue;
                                         row.Cells["rstfull"].Value = Unicode2String(data["data"].ToString());
                                     }
                                 }
@@ -305,7 +306,7 @@ namespace BumblebeeClient
                                 {
                                     row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
                                     row.Cells["rflag"].Value   = "异常";
-                                    row.Cells["Result"].Value  = "BumblebeeClient Catch Exception!";
+                                    row.Cells["rResult"].Value  = "BumblebeeClient Catch Exception!";
                                     row.Cells["rstfull"].Value = ee.ToString();
                                     failcnt++;
                                 }
@@ -318,7 +319,7 @@ namespace BumblebeeClient
                     catch (Exception ee){
                         row.Cells["rflag"].Value = "异常";
                         row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                        row.Cells["Result"].Value = "BumblebeeClient Catch Exception!";
+                        row.Cells["rResult"].Value = "BumblebeeClient Catch Exception!";
                         row.Cells["rstfull"].Value = ee.ToString();
                         failcnt++;
                         execStatus.Text = "执行中:"+ (jobs.Count- succcnt -failcnt).ToString() + ",成功:" + succcnt.ToString() + ",失败:" + failcnt.ToString();
@@ -390,20 +391,84 @@ namespace BumblebeeClient
         }
         private void agentDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            //MessageBox.Show(agentDataGrid);
             if (e.RowIndex != -1)
             {
                 if (e.ColumnIndex != 0)
                 {
-                    this.rsttitle.Show();
-                    this.rsttitle.Text = "IP:" + agentDataGrid.Rows[e.RowIndex].Cells["AgentIp"].Value.ToString() + " Result:";
-                    if (agentDataGrid.Rows[e.RowIndex].Cells["rstfull"].Value != null)
+                    if (e.ColumnIndex == 2)
                     {
-                        this.rst.Text = Unicode2String(agentDataGrid.Rows[e.RowIndex].Cells["rstfull"].Value.ToString()).Replace("\n", "\r\n").Replace("\\n", "\r\n");
+                        /*
+                        Random rd = new Random();
+                        //SHELL创建成功，5s钟内连接，否则超时！
+                        string Port = rd.Next(60000, 65535).ToString();
+                        try
+                        {
+                            Process myProcess = new Process();
+                            myProcess.StartInfo.UseShellExecute = false;
+                            myProcess.StartInfo.FileName = "cmd.exe";
+                            myProcess.StartInfo.Arguments = "/c nc -i 3 " + agentDataGrid.Rows[e.RowIndex].Cells["AgentIp"].Value.ToString() + " "+ Port;
+                            myProcess.Start();
+                        }
+                        catch (Exception ee)
+                        {
+                            MessageBox.Show("本地启动SHELL连接失败!(" + ee.Message + ")", "提示");
+                        }
+                        Thread oGetArgThread = new Thread(new System.Threading.ThreadStart(() =>
+                        {
+                            string ip = agentDataGrid.Rows[e.RowIndex].Cells["AgentIp"].Value.ToString();
+                            
+                            Dictionary<string, string> pm = new Dictionary<string, string>();
+                            pm.Add("email", Login.EMAIL);
+                            pm.Add("ip", ip);
+                            pm.Add("port", Port);
+                            pm.Add("timestamp", SecurityUtil.GetTimestamp());
+                            string sign = SecurityUtil.CreateSign(pm, Login.PWDKEY);
+                            pm.Add("sign", sign);
+                            Console.WriteLine(pm);
+                            try
+                            {
+                                string result = HttpUtil.SendPost(ConstantUrl.runShellUrl, pm);
+                                //Console.WriteLine(result);
+                                if (String.IsNullOrEmpty(result.Trim()))
+                                {
+                                    MessageBox.Show("创建连接BumblebeeServer创建SHELL失败!", "提示");
+                                }
+                                else
+                                {
+                                    Dictionary<string, Object> data = JsonConvert.DeserializeObject<Dictionary<string, Object>>(result);
+                                    if (data == null || data["code"] == null || int.Parse(data["code"].ToString()) != 0)
+                                    {
+                                        MessageBox.Show("服务器(" + ip + ")返回异常,创建SHELL失败!", "提示");
+                                    }
+                                    else
+                                    {
+                                        
+                                    }
+
+                                }
+                            }
+                            catch (Exception ee)
+                            {
+                                MessageBox.Show("创建SHELL失败!(" + ee.Message + ")", "提示");
+                            }
+                        }));
+                        oGetArgThread.IsBackground = true;
+                        oGetArgThread.Start();
+                    */
                     }
-                    else
-                    {
-                        this.rst.Text = "";
+                    else {
+                        this.rsttitle.Text = "IP:" + agentDataGrid.Rows[e.RowIndex].Cells["AgentIp"].Value.ToString() + " Result:";
+                        if (agentDataGrid.Rows[e.RowIndex].Cells["rstfull"].Value != null)
+                        {
+                            this.rst.Text = Unicode2String(agentDataGrid.Rows[e.RowIndex].Cells["rstfull"].Value.ToString()).Replace("\n", "\r\n").Replace("\\n", "\r\n");
+                        }
+                        else
+                        {
+                            this.rst.Text = "";
+                        }
                     }
+                    //this.rsttitle.Show();
                 }
             }
         }

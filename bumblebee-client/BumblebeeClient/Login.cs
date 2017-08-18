@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using Newtonsoft.Json;
 
 namespace BumblebeeClient
 {
@@ -11,6 +12,7 @@ namespace BumblebeeClient
     {
         private readonly MaterialSkinManager materialSkinManager;
 
+        public static String VERSION = "0.0.4";
         public static String EMAIL;
         public static String PWDKEY;
 
@@ -50,6 +52,7 @@ namespace BumblebeeClient
             Login.EMAIL  = account;
             Login.PWDKEY = SecurityUtil.CreateMD5Hash(pwd);
             //Login.PWDKEY = "";
+            pm.Add("version",Login.VERSION);
             pm.Add("email", Login.EMAIL);
             //pm.Add("pwd", pwd);
             pm.Add("timestamp",SecurityUtil.GetTimestamp());
@@ -58,23 +61,29 @@ namespace BumblebeeClient
             try
             {
                 string result = HttpUtil.SendPost(ConstantUrl.loginUrl, pm);
+                Console.WriteLine(result);
                 if (String.IsNullOrEmpty(result))
                 {
-                    MessageBox.Show("登录失败，服务端异常！", "提示");
+                    MessageBox.Show("登录失败，帐号密码错误！", "提示");
                 }
-                else if ("success".Equals(result))
-                {
-                    MainWindow main = new MainWindow(this);
-                    main.StartPosition = FormStartPosition.Manual;
-                    int xWidth = SystemInformation.PrimaryMonitorSize.Width;
-                    int yHeight = SystemInformation.PrimaryMonitorSize.Height;
-                    main.Location = new Point((xWidth - main.Width) / 2, (yHeight - main.Height) / 2);
-                    this.Hide();
-                    main.Show();
-                }
-                else
-                {
-                    MessageBox.Show("登录失败，用户名或密码错误！", "提示");
+                else {
+                    Dictionary<string, string> r = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
+                    if (r["code"] == "0") {
+                        if (!string.IsNullOrEmpty(r["msg"])) {
+                            MessageBox.Show(r["msg"], "提示");
+                        }
+                        MainWindow main = new MainWindow(this);
+                        main.StartPosition = FormStartPosition.Manual;
+                        int xWidth = SystemInformation.PrimaryMonitorSize.Width;
+                        int yHeight = SystemInformation.PrimaryMonitorSize.Height;
+                        main.Location = new Point((xWidth - main.Width) / 2, (yHeight - main.Height) / 2);
+                        this.Hide();
+                        main.Show();
+                    }
+                    else {
+                        MessageBox.Show(r["msg"], "提示");
+                    }
+
                 }
             }
             catch (Exception ee) {
