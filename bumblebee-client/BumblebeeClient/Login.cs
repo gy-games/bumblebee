@@ -12,7 +12,7 @@ namespace BumblebeeClient
     {
         private readonly MaterialSkinManager materialSkinManager;
 
-        public static String VERSION = "0.0.4";
+        public static String VERSION = "0.0.5";
         public static String EMAIL;
         public static String PWDKEY;
 

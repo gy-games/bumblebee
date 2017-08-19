@@ -64,8 +64,9 @@
             this.Manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SubName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.shell = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Os = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shell = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.isdaemon = new System.Windows.Forms.CheckBox();
             this.serverlist.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.agentDataGrid)).BeginInit();
             this.groupSearch.SuspendLayout();
@@ -140,8 +141,8 @@
             this.Manager,
             this.MainName,
             this.SubName,
-            this.shell,
-            this.Os});
+            this.Os,
+            this.shell});
             this.agentDataGrid.Location = new System.Drawing.Point(18, 29);
             this.agentDataGrid.Name = "agentDataGrid";
             this.agentDataGrid.RowTemplate.Height = 23;
@@ -258,7 +259,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label_cmd_title.AutoSize = true;
-            this.label_cmd_title.Location = new System.Drawing.Point(17, 31);
+            this.label_cmd_title.Location = new System.Drawing.Point(17, 30);
             this.label_cmd_title.Name = "label_cmd_title";
             this.label_cmd_title.Size = new System.Drawing.Size(41, 12);
             this.label_cmd_title.TabIndex = 2;
@@ -269,9 +270,9 @@
             this.cmdtext.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdtext.Location = new System.Drawing.Point(72, 26);
+            this.cmdtext.Location = new System.Drawing.Point(61, 26);
             this.cmdtext.Name = "cmdtext";
-            this.cmdtext.Size = new System.Drawing.Size(880, 21);
+            this.cmdtext.Size = new System.Drawing.Size(890, 21);
             this.cmdtext.TabIndex = 3;
             // 
             // execbtn
@@ -290,6 +291,7 @@
             // 
             this.groupAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupAction.Controls.Add(this.isdaemon);
             this.groupAction.Controls.Add(this.cmdtext);
             this.groupAction.Controls.Add(this.execbtn);
             this.groupAction.Controls.Add(this.label_cmd_title);
@@ -444,7 +446,7 @@
             this.MainName.Name = "MainName";
             this.MainName.ReadOnly = true;
             this.MainName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.MainName.Width = 75;
+            this.MainName.Width = 60;
             // 
             // SubName
             // 
@@ -454,7 +456,14 @@
             this.SubName.Name = "SubName";
             this.SubName.ReadOnly = true;
             this.SubName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.SubName.Width = 75;
+            this.SubName.Width = 60;
+            // 
+            // Os
+            // 
+            this.Os.DataPropertyName = "Os";
+            this.Os.HeaderText = "操作系统";
+            this.Os.Name = "Os";
+            this.Os.Width = 70;
             // 
             // shell
             // 
@@ -466,15 +475,19 @@
             this.shell.Text = "连接";
             this.shell.ToolTipText = "连接";
             this.shell.UseColumnTextForButtonValue = true;
-            this.shell.Visible = false;
-            this.shell.Width = 45;
+            this.shell.Width = 42;
             // 
-            // Os
+            // isdaemon
             // 
-            this.Os.DataPropertyName = "Os";
-            this.Os.HeaderText = "操作系统";
-            this.Os.Name = "Os";
-            this.Os.Width = 80;
+            this.isdaemon.AutoSize = true;
+            this.isdaemon.Enabled = false;
+            this.isdaemon.Location = new System.Drawing.Point(868, 28);
+            this.isdaemon.Name = "isdaemon";
+            this.isdaemon.Size = new System.Drawing.Size(96, 16);
+            this.isdaemon.TabIndex = 4;
+            this.isdaemon.Text = "守护(Daemon)";
+            this.isdaemon.UseVisualStyleBackColor = true;
+            this.isdaemon.Visible = false;
             // 
             // MainWindow
             // 
@@ -547,8 +560,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Manager;
         private System.Windows.Forms.DataGridViewTextBoxColumn MainName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SubName;
-        private System.Windows.Forms.DataGridViewButtonColumn shell;
         private System.Windows.Forms.DataGridViewTextBoxColumn Os;
+        private System.Windows.Forms.DataGridViewButtonColumn shell;
+        private System.Windows.Forms.CheckBox isdaemon;
     }
 }
 

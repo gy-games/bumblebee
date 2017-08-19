@@ -398,7 +398,7 @@ namespace BumblebeeClient
                 {
                     if (e.ColumnIndex == 2)
                     {
-                        /*
+                        
                         Random rd = new Random();
                         //SHELL创建成功，5s钟内连接，否则超时！
                         string Port = rd.Next(60000, 65535).ToString();
@@ -425,11 +425,10 @@ namespace BumblebeeClient
                             pm.Add("timestamp", SecurityUtil.GetTimestamp());
                             string sign = SecurityUtil.CreateSign(pm, Login.PWDKEY);
                             pm.Add("sign", sign);
-                            Console.WriteLine(pm);
+                            //Console.WriteLine(pm);
                             try
                             {
                                 string result = HttpUtil.SendPost(ConstantUrl.runShellUrl, pm);
-                                //Console.WriteLine(result);
                                 if (String.IsNullOrEmpty(result.Trim()))
                                 {
                                     MessageBox.Show("创建连接BumblebeeServer创建SHELL失败!", "提示");
@@ -437,13 +436,15 @@ namespace BumblebeeClient
                                 else
                                 {
                                     Dictionary<string, Object> data = JsonConvert.DeserializeObject<Dictionary<string, Object>>(result);
-                                    if (data == null || data["code"] == null || int.Parse(data["code"].ToString()) != 0)
+                                    if (data == null || data["code"] == null)
                                     {
                                         MessageBox.Show("服务器(" + ip + ")返回异常,创建SHELL失败!", "提示");
+                                    } else if (int.Parse(data["code"].ToString()) != 0) {
+                                        MessageBox.Show(data["data"].ToString(), "提示");
                                     }
                                     else
                                     {
-                                        
+                                        //success
                                     }
 
                                 }
@@ -455,7 +456,7 @@ namespace BumblebeeClient
                         }));
                         oGetArgThread.IsBackground = true;
                         oGetArgThread.Start();
-                    */
+                    
                     }
                     else {
                         this.rsttitle.Text = "IP:" + agentDataGrid.Rows[e.RowIndex].Cells["AgentIp"].Value.ToString() + " Result:";
@@ -468,7 +469,6 @@ namespace BumblebeeClient
                             this.rst.Text = "";
                         }
                     }
-                    //this.rsttitle.Show();
                 }
             }
         }
