@@ -307,7 +307,7 @@ namespace BumblebeeClient
                         //失败
                         rst["color"] = "red";
                         rst["rflag"] = "失败";
-                        rst["rResult"] = "Bumblebee Server Error！";
+                        rst["rResult"] = data == null ? "Bumblebee Server返回结果解析为空或返回码错误！" : data["data"].ToString();
                         rst["rstfull"] = data == null?"Bumblebee Server返回结果解析为空或返回码错误！": data["data"].ToString();
                         failcnt++;
                     }
