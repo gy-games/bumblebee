@@ -12,7 +12,7 @@ namespace BumblebeeClient
     {
         private readonly MaterialSkinManager materialSkinManager;
 
-        public static String VERSION = "0.0.5";
+        public static String VERSION = "0.0.6";
         public static String EMAIL;
         public static String PWDKEY;
 
@@ -61,16 +61,15 @@ namespace BumblebeeClient
             try
             {
                 string result = HttpUtil.SendPost(ConstantUrl.loginUrl, pm);
-                Console.WriteLine(result);
-                if (String.IsNullOrEmpty(result))
+                if (String.IsNullOrEmpty(result.Trim()))
                 {
                     MessageBox.Show("登录失败，帐号密码错误！", "提示");
                 }
                 else {
                     Dictionary<string, string> r = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
                     if (r["code"] == "0") {
-                        if (!string.IsNullOrEmpty(r["msg"])) {
-                            MessageBox.Show(r["msg"], "提示");
+                        if (!string.IsNullOrEmpty(r["msg"].Trim())) {
+                            MessageBox.Show(r["msg"].Trim(), "提示");
                         }
                         MainWindow main = new MainWindow(this);
                         main.StartPosition = FormStartPosition.Manual;
@@ -81,7 +80,7 @@ namespace BumblebeeClient
                         main.Show();
                     }
                     else {
-                        MessageBox.Show(r["msg"], "提示");
+                        MessageBox.Show(r["msg"].Trim(), "提示");
                     }
 
                 }

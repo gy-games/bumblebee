@@ -35,6 +35,18 @@
             this.selectrev = new System.Windows.Forms.Button();
             this.selectall = new System.Windows.Forms.Button();
             this.agentDataGrid = new System.Windows.Forms.DataGridView();
+            this.ck_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.AgentIp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rflag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rstfull = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AgentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Asset = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SubName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Os = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.conn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.rstx = new System.Windows.Forms.Button();
             this.groupSearch = new System.Windows.Forms.GroupBox();
             this.managerBox = new System.Windows.Forms.ComboBox();
@@ -47,6 +59,7 @@
             this.cmdtext = new System.Windows.Forms.TextBox();
             this.execbtn = new System.Windows.Forms.Button();
             this.groupAction = new System.Windows.Forms.GroupBox();
+            this.isdaemon = new System.Windows.Forms.CheckBox();
             this.agentInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.rsttitle = new System.Windows.Forms.GroupBox();
@@ -54,19 +67,6 @@
             this.reloginbtn = new System.Windows.Forms.Label();
             this.aboutbtn = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
-            this.ck_column = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.AgentIp = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rflag = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rstfull = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AgentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Asset = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Manager = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SubName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Os = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.shell = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.isdaemon = new System.Windows.Forms.CheckBox();
             this.serverlist.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.agentDataGrid)).BeginInit();
             this.groupSearch.SuspendLayout();
@@ -142,7 +142,7 @@
             this.MainName,
             this.SubName,
             this.Os,
-            this.shell});
+            this.conn});
             this.agentDataGrid.Location = new System.Drawing.Point(18, 29);
             this.agentDataGrid.Name = "agentDataGrid";
             this.agentDataGrid.RowTemplate.Height = 23;
@@ -153,6 +153,110 @@
             this.agentDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.agentDataGrid_CellContentClick);
             this.agentDataGrid.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.agentDataGrid_ColumnHeaderMouseClick);
             this.agentDataGrid.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.agentDataGrid_RowPostPaint);
+            // 
+            // ck_column
+            // 
+            this.ck_column.HeaderText = "";
+            this.ck_column.MinimumWidth = 30;
+            this.ck_column.Name = "ck_column";
+            this.ck_column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ck_column.Width = 30;
+            // 
+            // AgentIp
+            // 
+            this.AgentIp.DataPropertyName = "AgentIp";
+            this.AgentIp.HeaderText = "IP";
+            this.AgentIp.Name = "AgentIp";
+            this.AgentIp.ReadOnly = true;
+            // 
+            // rflag
+            // 
+            this.rflag.DataPropertyName = "rflag";
+            this.rflag.HeaderText = "状态";
+            this.rflag.Name = "rflag";
+            this.rflag.Width = 40;
+            // 
+            // rResult
+            // 
+            this.rResult.DataPropertyName = "rResult";
+            this.rResult.FillWeight = 350F;
+            this.rResult.HeaderText = "返回值";
+            this.rResult.MinimumWidth = 50;
+            this.rResult.Name = "rResult";
+            this.rResult.ReadOnly = true;
+            this.rResult.Width = 170;
+            // 
+            // rstfull
+            // 
+            this.rstfull.DataPropertyName = "rstfull";
+            this.rstfull.HeaderText = "全返回值";
+            this.rstfull.Name = "rstfull";
+            this.rstfull.ReadOnly = true;
+            this.rstfull.Visible = false;
+            // 
+            // AgentName
+            // 
+            this.AgentName.DataPropertyName = "AgentName";
+            this.AgentName.FillWeight = 80F;
+            this.AgentName.HeaderText = "应用";
+            this.AgentName.Name = "AgentName";
+            this.AgentName.ReadOnly = true;
+            this.AgentName.Width = 75;
+            // 
+            // Asset
+            // 
+            this.Asset.DataPropertyName = "Asset";
+            this.Asset.FillWeight = 60F;
+            this.Asset.HeaderText = "资产号";
+            this.Asset.Name = "Asset";
+            this.Asset.ReadOnly = true;
+            this.Asset.Width = 60;
+            // 
+            // Manager
+            // 
+            this.Manager.DataPropertyName = "Manager";
+            this.Manager.FillWeight = 60F;
+            this.Manager.HeaderText = "负责人";
+            this.Manager.Name = "Manager";
+            this.Manager.ReadOnly = true;
+            this.Manager.Width = 60;
+            // 
+            // MainName
+            // 
+            this.MainName.DataPropertyName = "MainName";
+            this.MainName.FillWeight = 80F;
+            this.MainName.HeaderText = "一级分类";
+            this.MainName.Name = "MainName";
+            this.MainName.ReadOnly = true;
+            this.MainName.Width = 60;
+            // 
+            // SubName
+            // 
+            this.SubName.DataPropertyName = "SubName";
+            this.SubName.FillWeight = 80F;
+            this.SubName.HeaderText = "二级分类";
+            this.SubName.Name = "SubName";
+            this.SubName.ReadOnly = true;
+            this.SubName.Width = 60;
+            // 
+            // Os
+            // 
+            this.Os.DataPropertyName = "Os";
+            this.Os.HeaderText = "操作系统";
+            this.Os.Name = "Os";
+            this.Os.Width = 70;
+            // 
+            // conn
+            // 
+            this.conn.DataPropertyName = "conn";
+            this.conn.HeaderText = "SHELL";
+            this.conn.Name = "conn";
+            this.conn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.conn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.conn.Text = "连接";
+            this.conn.ToolTipText = "连接";
+            this.conn.UseColumnTextForButtonValue = true;
+            this.conn.Width = 42;
             // 
             // rstx
             // 
@@ -272,7 +376,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdtext.Location = new System.Drawing.Point(61, 26);
             this.cmdtext.Name = "cmdtext";
-            this.cmdtext.Size = new System.Drawing.Size(890, 21);
+            this.cmdtext.Size = new System.Drawing.Size(801, 21);
             this.cmdtext.TabIndex = 3;
             // 
             // execbtn
@@ -301,6 +405,18 @@
             this.groupAction.TabIndex = 2;
             this.groupAction.TabStop = false;
             this.groupAction.Text = "操作";
+            // 
+            // isdaemon
+            // 
+            this.isdaemon.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.isdaemon.AutoSize = true;
+            this.isdaemon.Location = new System.Drawing.Point(872, 28);
+            this.isdaemon.Name = "isdaemon";
+            this.isdaemon.Size = new System.Drawing.Size(96, 16);
+            this.isdaemon.TabIndex = 4;
+            this.isdaemon.Text = "守护(Daemon)";
+            this.isdaemon.UseVisualStyleBackColor = true;
             // 
             // rsttitle
             // 
@@ -366,129 +482,6 @@
             this.usernameLabel.Text = "u";
             this.usernameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // ck_column
-            // 
-            this.ck_column.HeaderText = "";
-            this.ck_column.MinimumWidth = 30;
-            this.ck_column.Name = "ck_column";
-            this.ck_column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ck_column.Width = 30;
-            // 
-            // AgentIp
-            // 
-            this.AgentIp.DataPropertyName = "AgentIp";
-            this.AgentIp.HeaderText = "IP";
-            this.AgentIp.Name = "AgentIp";
-            this.AgentIp.ReadOnly = true;
-            this.AgentIp.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            // 
-            // rflag
-            // 
-            this.rflag.DataPropertyName = "rflag";
-            this.rflag.HeaderText = "状态";
-            this.rflag.Name = "rflag";
-            this.rflag.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.rflag.Width = 40;
-            // 
-            // rResult
-            // 
-            this.rResult.DataPropertyName = "rResult";
-            this.rResult.FillWeight = 350F;
-            this.rResult.HeaderText = "返回值";
-            this.rResult.MinimumWidth = 50;
-            this.rResult.Name = "rResult";
-            this.rResult.ReadOnly = true;
-            this.rResult.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.rResult.Width = 170;
-            // 
-            // rstfull
-            // 
-            this.rstfull.HeaderText = "rstfull";
-            this.rstfull.Name = "rstfull";
-            this.rstfull.ReadOnly = true;
-            this.rstfull.Visible = false;
-            // 
-            // AgentName
-            // 
-            this.AgentName.DataPropertyName = "AgentName";
-            this.AgentName.FillWeight = 80F;
-            this.AgentName.HeaderText = "应用";
-            this.AgentName.Name = "AgentName";
-            this.AgentName.ReadOnly = true;
-            this.AgentName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.AgentName.Width = 75;
-            // 
-            // Asset
-            // 
-            this.Asset.DataPropertyName = "Asset";
-            this.Asset.FillWeight = 60F;
-            this.Asset.HeaderText = "资产号";
-            this.Asset.Name = "Asset";
-            this.Asset.ReadOnly = true;
-            this.Asset.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.Asset.Width = 60;
-            // 
-            // Manager
-            // 
-            this.Manager.DataPropertyName = "Manager";
-            this.Manager.FillWeight = 60F;
-            this.Manager.HeaderText = "负责人";
-            this.Manager.Name = "Manager";
-            this.Manager.ReadOnly = true;
-            this.Manager.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.Manager.Width = 60;
-            // 
-            // MainName
-            // 
-            this.MainName.DataPropertyName = "MainName";
-            this.MainName.FillWeight = 80F;
-            this.MainName.HeaderText = "一级分类";
-            this.MainName.Name = "MainName";
-            this.MainName.ReadOnly = true;
-            this.MainName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.MainName.Width = 60;
-            // 
-            // SubName
-            // 
-            this.SubName.DataPropertyName = "SubName";
-            this.SubName.FillWeight = 80F;
-            this.SubName.HeaderText = "二级分类";
-            this.SubName.Name = "SubName";
-            this.SubName.ReadOnly = true;
-            this.SubName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.SubName.Width = 60;
-            // 
-            // Os
-            // 
-            this.Os.DataPropertyName = "Os";
-            this.Os.HeaderText = "操作系统";
-            this.Os.Name = "Os";
-            this.Os.Width = 70;
-            // 
-            // shell
-            // 
-            this.shell.DataPropertyName = "conn";
-            this.shell.HeaderText = "SHELL";
-            this.shell.Name = "shell";
-            this.shell.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.shell.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.shell.Text = "连接";
-            this.shell.ToolTipText = "连接";
-            this.shell.UseColumnTextForButtonValue = true;
-            this.shell.Width = 42;
-            // 
-            // isdaemon
-            // 
-            this.isdaemon.AutoSize = true;
-            this.isdaemon.Enabled = false;
-            this.isdaemon.Location = new System.Drawing.Point(868, 28);
-            this.isdaemon.Name = "isdaemon";
-            this.isdaemon.Size = new System.Drawing.Size(96, 16);
-            this.isdaemon.TabIndex = 4;
-            this.isdaemon.Text = "守护(Daemon)";
-            this.isdaemon.UseVisualStyleBackColor = true;
-            this.isdaemon.Visible = false;
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -550,6 +543,7 @@
         private System.Windows.Forms.Label aboutbtn;
         private System.Windows.Forms.Label usernameLabel;
         private System.Windows.Forms.Label execStatus;
+        private System.Windows.Forms.CheckBox isdaemon;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ck_column;
         private System.Windows.Forms.DataGridViewTextBoxColumn AgentIp;
         private System.Windows.Forms.DataGridViewTextBoxColumn rflag;
@@ -561,8 +555,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MainName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SubName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Os;
-        private System.Windows.Forms.DataGridViewButtonColumn shell;
-        private System.Windows.Forms.CheckBox isdaemon;
+        private System.Windows.Forms.DataGridViewButtonColumn conn;
     }
 }
 

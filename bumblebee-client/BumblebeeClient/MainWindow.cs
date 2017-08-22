@@ -14,12 +14,16 @@ namespace BumblebeeClient
 {
     public partial class MainWindow : MaterialForm
     {
-        private static int succcnt = 0, failcnt = 0;
+        private static int jobcnt=0, succcnt = 0, failcnt = 0;
+        private static bool execing = false;
         private readonly MaterialSkinManager materialSkinManager;
+        private delegate void UpdateExecStatus(string txt,int execcnt);
+        private delegate void UpdateExecRow(Dictionary<string, string> dic,int rowindex);
         Login currLogin = null;
+
         public MainWindow(Login loginPannel)
         {
-            Control.CheckForIllegalCrossThreadCalls = false;
+            //Control.CheckForIllegalCrossThreadCalls = false;
             currLogin = loginPannel;
             InitializeComponent();
             materialSkinManager = MaterialSkinManager.Instance;
@@ -217,22 +221,22 @@ namespace BumblebeeClient
         }
         private void execbtn_Click(object sender, EventArgs e)
         {
+            jobcnt  = 0;
             succcnt = 0;
             failcnt = 0;
             //运行命令获取结果
             string command = cmdtext.Text;
-            if ("".Equals(command))
+            if ("".Equals(command.Trim()))
             {
                 MessageBox.Show("命令为空，请输入命令！", "提示");
                 return;
             }
-            this.execbtn.Enabled = false;
             List<int> jobs = new List<int>();
             if (agentDataGrid.Rows.Count > 0)
             {
                 for (int i = 0; i < agentDataGrid.Rows.Count; i++)
                 {
-                    agentDataGrid.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.White;
+                    agentDataGrid.Rows[i].DefaultCellStyle.BackColor = Color.White;
                     string _selectValue = agentDataGrid.Rows[i].Cells["ck_column"].EditedFormattedValue.ToString();
                     if (_selectValue == "True")
                     {
@@ -246,91 +250,143 @@ namespace BumblebeeClient
             }
             else
             {
+                this.execbtn.Text = "执行中..";
+                this.execbtn.Enabled = false;
+                execing = true;
+                jobcnt = jobs.Count;
+                string uri = "";
+                if (this.isdaemon.Checked == true)
+                {
+                    uri = ConstantUrl.runDaemonCommandUrl;
+                }
+                else {
+                    uri = ConstantUrl.runCommandUrl;
+                }
+                for (int c = 0; c < agentDataGrid.Columns.Count; c++) {
+                    agentDataGrid.Columns[c].SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
                 foreach (int index in jobs)
                 {
-                    DataGridViewRow row = agentDataGrid.Rows[index];
-                    try {
-                        lock (row) {
-                            string ip = row.Cells["AgentIp"].EditedFormattedValue.ToString();
-                            Dictionary<string, string> pm = new Dictionary<string, string>();
-                            pm.Add("email", Login.EMAIL);
-                            pm.Add("ip", ip);
-                            pm.Add("command", command);
-                            pm.Add("timestamp", SecurityUtil.GetTimestamp());
-                            string sign = SecurityUtil.CreateSign(pm, Login.PWDKEY);
-                            pm.Add("sign", sign);
-                            Thread oGetArgThread = new Thread(new System.Threading.ThreadStart(() =>
-                            {
-                                try
-                                {
-                                    string result = HttpUtil.SendPost(ConstantUrl.runCommandUrl, pm);
-                                    if (String.IsNullOrEmpty(result.Trim()))
-                                    {
-                                        //返回结果为空
-                                        row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                                        row.Cells["rflag"].Value = "异常";
-                                        row.Cells["rResult"].Value = "Bumblebee Server返回结果为空！";
-                                        failcnt++;
-                                    }
-                                    else
-                                    {
-                                        Dictionary<string, Object> data = JsonConvert.DeserializeObject<Dictionary<string, Object>>(result);
-                                        if (data == null || data["code"] == null || int.Parse(data["code"].ToString()) != 0)
-                                        {
-                                            //失败
-                                            row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                                            row.Cells["rflag"].Value = "失败";
-                                            failcnt++;
-                                        }
-                                        else
-                                        {
-                                            //成功
-                                            row.Cells["rflag"].Value = "成功";
-                                            row.DefaultCellStyle.BackColor = System.Drawing.Color.PaleGreen;
-                                            succcnt++;
-                                        }
-                                        string miniValue = "";
-                                        if (Unicode2String(data["data"].ToString()).Length > 40)
-                                        {
-                                            miniValue = Unicode2String(data["data"].ToString()).Substring(0, 40);
-                                        }
-                                        else
-                                        {
-                                            miniValue = Unicode2String(data["data"].ToString());
-                                        }
-                                        row.Cells["rResult"].Value  = miniValue;
-                                        row.Cells["rstfull"].Value = Unicode2String(data["data"].ToString());
-                                    }
-                                }
-                                catch (Exception ee)
-                                {
-                                    row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                                    row.Cells["rflag"].Value   = "异常";
-                                    row.Cells["rResult"].Value  = "BumblebeeClient Catch Exception!";
-                                    row.Cells["rstfull"].Value = ee.ToString();
-                                    failcnt++;
-                                }
-                                execStatus.Text = "执行中:" + (jobs.Count - succcnt - failcnt).ToString() + ",成功:" + succcnt.ToString() + ",失败:" + failcnt.ToString();
-                            }));
-                            oGetArgThread.IsBackground = true;
-                            oGetArgThread.Start();
-                        }
-                    }
-                    catch (Exception ee){
-                        row.Cells["rflag"].Value = "异常";
-                        row.DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                        row.Cells["rResult"].Value = "BumblebeeClient Catch Exception!";
-                        row.Cells["rstfull"].Value = ee.ToString();
+                    string ip = agentDataGrid.Rows[index].Cells["AgentIp"].EditedFormattedValue.ToString();
+                    Dictionary<string, string> pm = new Dictionary<string, string>();
+                    pm.Add("email", Login.EMAIL);
+                    pm.Add("ip", ip);
+                    pm.Add("command", command);
+                    pm.Add("timestamp", SecurityUtil.GetTimestamp());
+                    pm.Add("sign", SecurityUtil.CreateSign(pm, Login.PWDKEY));
+                    Thread oGetArgThread = new Thread(new ThreadStart(() =>
+                    {
+                        Dictionary < string, string >  rowrst = this.ThreadEXEC(pm, uri);
+                        this.UpdateExecRowACT(rowrst,index);
+                    }));     
+                    oGetArgThread.IsBackground = true;
+                    oGetArgThread.Start();
+                }
+            }
+            
+        }
+        private Dictionary<string, string> ThreadEXEC(Dictionary<string, string> pm, string uri) {
+            Dictionary<string, string> rst = new Dictionary<string, string>();
+            try
+            {
+                string result = HttpUtil.SendPost(uri, pm);
+                if (String.IsNullOrEmpty(result.Trim()))
+                {
+                    //返回结果为空
+                    rst["color"] = "red";
+                    rst["rflag"] = "异常";
+                    rst["rResult"] = "Bumblebee Server Error！";
+                    rst["rstfull"] = "Bumblebee Server返回结果为空！";
+                    failcnt++;
+                }
+                else
+                {
+                    Dictionary<string, Object> data = JsonConvert.DeserializeObject<Dictionary<string, Object>>(result);
+                    if (data == null || data["code"] == null || int.Parse(data["code"].ToString()) != 0)
+                    {
+                        //失败
+                        rst["color"] = "red";
+                        rst["rflag"] = "失败";
+                        rst["rResult"] = "Bumblebee Server Error！";
+                        rst["rstfull"] = data == null?"Bumblebee Server返回结果解析为空或返回码错误！": data["data"].ToString();
                         failcnt++;
-                        execStatus.Text = "执行中:"+ (jobs.Count- succcnt -failcnt).ToString() + ",成功:" + succcnt.ToString() + ",失败:" + failcnt.ToString();
+                    }
+                    else
+                    {
+                        //成功
+                        rst["color"] = "green";
+                        rst["rflag"] = "成功";
+                        string miniValue = "";
+                        if (Unicode2String(data["data"].ToString()).Length > 40)
+                        {
+                            miniValue = Unicode2String(data["data"].ToString()).Substring(0, 40);
+                        }
+                        else
+                        {
+                            miniValue = Unicode2String(data["data"].ToString());
+                        }
+                        rst["rResult"] = miniValue;
+                        rst["rstfull"] = Unicode2String(data["data"].ToString());
+                        succcnt++;
                     }
                 }
-                
             }
-            this.execbtn.Enabled = true;
+            catch (Exception ee)
+            {
+                rst["color"]   = "red";
+                rst["rflag"]   = "异常";
+                rst["rResult"] = "BumblebeeClient Catch Exception!";
+                rst["rstfull"] = ee.ToString();
+                failcnt++;
+            }
+            this.UpdateExecStatusACT("执行中:" + (jobcnt - succcnt - failcnt).ToString() + ",成功:" + succcnt.ToString() + ",失败:" + failcnt.ToString(), (jobcnt - succcnt - failcnt));
+            return rst;
+        }
+        private void UpdateExecStatusACT(string val,int execcnt) {
+            if (this.execStatus.InvokeRequired)
+            {
+                UpdateExecStatus fc = new UpdateExecStatus(UpdateExecStatusACT);
+                this.Invoke(fc, new object[2] { val, execcnt });
+            }
+            else {
+                this.execStatus.Text = val;
+                this.execStatus.Refresh();
+            }
+            if (execcnt == 0) {
+                this.execbtn.Enabled = true;
+                this.execbtn.Text = "执行";
+                execing = false;
+                for (int c = 0; c < agentDataGrid.Columns.Count; c++)
+                {
+                    agentDataGrid.Columns[c].SortMode = DataGridViewColumnSortMode.Automatic;
+                }
+            }
+        }
+        private void UpdateExecRowACT(Dictionary<string, string> dic, int rowindex) {
+
+            if (this.agentDataGrid.InvokeRequired)
+            {
+                UpdateExecRow fc = new UpdateExecRow(UpdateExecRowACT);
+                this.Invoke(fc, new object[2] { dic, rowindex });
+            }
+            else
+            {
+                if (dic["color"] == "red") {
+                    agentDataGrid.Rows[rowindex].DefaultCellStyle.BackColor = System.Drawing.Color.Red;
+                }
+                else if(dic["color"] == "green") {
+                    agentDataGrid.Rows[rowindex].DefaultCellStyle.BackColor = System.Drawing.Color.PaleGreen;
+                }
+                this.agentDataGrid.Rows[rowindex].Cells["rResult"].Value = dic["rResult"];
+                this.agentDataGrid.Rows[rowindex].Cells["rstfull"].Value = dic["rstfull"];
+                this.agentDataGrid.Rows[rowindex].Cells["rflag"].Value   = dic["rflag"];
+                this.agentDataGrid.Refresh();
+            }
         }
         private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
+            //currLogin.Close();
+            //this.Close();
             System.Environment.Exit(0);
         }
         private void mainNameBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -373,34 +429,33 @@ namespace BumblebeeClient
         }
         private void agentDataGrid_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            agentDataGrid.Columns[e.ColumnIndex].SortMode = DataGridViewColumnSortMode.Automatic;
-            for (int i = 0; i < agentDataGrid.Rows.Count; i++)
-            {
-                if (agentDataGrid.Rows[i].Cells["rflag"].Value.ToString() == "成功")
+            if (execing == false) {
+                for (int i = 0; i < agentDataGrid.Rows.Count; i++)
                 {
-                    agentDataGrid.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.PaleGreen;
-                }
-                else if (agentDataGrid.Rows[i].Cells["rflag"].Value.ToString() == "失败") {
-                    agentDataGrid.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.Red;
-                }
-                else
-                {
-                    agentDataGrid.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.White;
+                    if (agentDataGrid.Rows[i].Cells["rflag"].Value.ToString() == "成功")
+                    {
+                        agentDataGrid.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.PaleGreen;
+                    }
+                    else if (agentDataGrid.Rows[i].Cells["rflag"].Value.ToString() == "失败")
+                    {
+                        agentDataGrid.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        agentDataGrid.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.White;
+                    }
                 }
             }
         }
         private void agentDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            //MessageBox.Show(agentDataGrid);
             if (e.RowIndex != -1)
             {
                 if (e.ColumnIndex != 0)
                 {
-                    if (e.ColumnIndex == 2)
+                    if (e.ColumnIndex == 11)
                     {
-                        
                         Random rd = new Random();
-                        //SHELL创建成功，5s钟内连接，否则超时！
                         string Port = rd.Next(60000, 65535).ToString();
                         try
                         {

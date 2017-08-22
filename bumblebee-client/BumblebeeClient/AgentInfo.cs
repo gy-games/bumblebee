@@ -74,5 +74,22 @@
             set { os = value; }
         }
 
+        private string rstfull;
+
+        public string Rstfull
+        {
+            get { return rstfull; }
+            set { rstfull = value; }
+        }
+
+        private string conn;
+
+        public string Conn
+        {
+            get { return conn; }
+            set { conn = value; }
+        }
+
+
     }
 }

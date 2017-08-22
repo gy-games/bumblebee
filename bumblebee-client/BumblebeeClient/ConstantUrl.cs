@@ -23,6 +23,8 @@ namespace BumblebeeClient
 
         public static string runCommandUrl = bumblebeeHost + "/terminal/runCommand";
 
+        public static string runDaemonCommandUrl = bumblebeeHost + "/terminal/runDaemonCommand";
+
         public static string runShellUrl = bumblebeeHost + "/terminal/runShell";
 
     }

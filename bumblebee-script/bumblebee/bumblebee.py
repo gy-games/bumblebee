@@ -8,7 +8,7 @@ import commands
 import base64
 import platform
  
-class cmd():
+class bumblebee():
 
     def shell(self,param):
         flag="false"
@@ -60,9 +60,39 @@ class cmd():
             result["code"]="-1"
             result["data"] = e
         return flag,result
+
+    def excute_daemon(self,param):
+        flag="false"
+        result={}
+        if( platform.system() == 'Windows' ):
+            result["code"]= "-1"
+            result["data"] = "Only Support Linux!"
+            return flag,result
+        try:
+            from subprocess import Popen,PIPE
+            import time,os,uuid
+            cmd=param["cmd"]
+            uuid = str(uuid.uuid1())
+            f,r = commands.getstatusoutput("python "+os.path.dirname(os.path.realpath(__file__))+"/excute_daemon.py  "+cmd+" "+uuid)
+            if f==0:
+                flag="true"
+                result["code"] = "0"
+                time.sleep(1)
+                ff,rr = commands.getstatusoutput("ps aux | grep -v \"\[*\]\" | grep -v \"/sbin/mingetty\" | grep -v \"/sbin/udevd\" | grep -v \"/sbin/rsyslog\" | grep -v \"/sbin/init\" | grep -v \"sshd\" | grep -v \"irqbalance\" | grep -v \"\-bash\" | grep -v \"inet_gethost\" | grep -v ntpd | grep -v dbus-daemon | grep -v \"/sbin/agetty\" | grep -v \"ps aux\"")
+                if ff==0 and rr!="":
+                    result["data"] = rr
+                else:
+                    result["data"] = "Get PS ERROR,Please Check by Yourself!"
+            else:
+                result["code"] = "-2"
+                result["data"] = r
+        except Exception,e:
+            result["code"]="-3"
+            result["data"] = e 
+        return flag,result
         
 if __name__ == '__main__':
     #c=cmd()
-    #print c.shell({"email":"toryzen","port":"1567"})
+    #print c.excute_daemon({"cmd":"dGFpbCAtZiAvdmFyL2xvZy9tZXNzYWdlcw=="})
     pass
 
