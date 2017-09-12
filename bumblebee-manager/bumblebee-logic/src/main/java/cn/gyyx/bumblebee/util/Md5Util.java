@@ -70,4 +70,5 @@ public class Md5Util {
         ss = MD5(bo.toString());
         return ss;
     }
+
 }

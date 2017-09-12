@@ -6,13 +6,12 @@ import cn.gyyx.bumblebee.model.BumblebeeUser;
 import cn.gyyx.bumblebee.model.CommandBlacklist;
 import cn.gyyx.bumblebee.model.OperateLog;
 import cn.gyyx.bumblebee.service.TerminalService;
-import cn.gyyx.bumblebee.util.Base64Util;
-import cn.gyyx.bumblebee.util.DateUtil;
-import cn.gyyx.bumblebee.util.ElvesUtil;
-import cn.gyyx.bumblebee.util.ValidateUtil;
+import cn.gyyx.bumblebee.util.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +22,13 @@ import java.util.Map;
 
 /**
  * @Author : east.Fu
- * @Description : 客户端servicice impl
+ * @Description :
  * @Date : Created in  2017/7/13 11:20
  */
 @Service
 public class TerminalServiceImpl implements TerminalService{
+
+    private static final Logger LOG = LoggerFactory.getLogger(TerminalServiceImpl.class);
 
     @Autowired
     private BumblebeeDao bumblebeeDao;
@@ -84,7 +85,7 @@ public class TerminalServiceImpl implements TerminalService{
     }
 
     @Override
-    public Map<String, Object> runCommand(String email,String ip, String command) {
+    public Map<String, Object> runCommand(String email,String ip, String command,String func) {
         Map<String, Object> rs =new HashMap<String, Object>();
 
         if(StringUtils.isBlank(ip)){
@@ -140,22 +141,124 @@ public class TerminalServiceImpl implements TerminalService{
             }
         }
 
-
         //封装参数
         Map<String, Object> cmd =new HashMap<String, Object>();
         cmd.put("cmd", Base64Util.getBase64(command));
 
         Map<String, Object> params =new HashMap<String, Object>();
         params.put("ip",ip.trim());
-        params.put("func","excute");
+//        params.put("func","excute");
+        params.put("func",func);
         params.put("proxy","python|app-worker.py");
-        params.put("param",JSON.toJSON(cmd));
+        params.put("param",JSON.toJSONString(cmd));
+        params.put("timeout",30);
         //调用elves运行 app脚本，回收结果（rt同步任务）
 
         long startTime=System.currentTimeMillis();
         Map<String,Object> back = ElvesUtil.createElvesJob(ElvesUtil.ELVES_API_JOB_RT_URI,params);
         long endTime=System.currentTimeMillis();
+        LOG.info(userName +" run command "+command+" and result :"+back);
+        if(null!=back&&!"true".equals(back.get("flag"))){
+            rs.put("code",-1);
+            rs.put("data",back.get("error"));
+            return rs;
+        }else if(null!=back&&"true".equals(back.get("flag"))&&null!=back.get("result")){
+            Map<String,Object> result = JSON.parseObject(back.get("result").toString(),new TypeReference<Map<String, Object>>(){});
+            if(null!=result||null!=result.get("worker_message")){
+                try {
+                    rs = JSON.parseObject(result.get("worker_message").toString(),new TypeReference<Map<String, Object>>(){});
+                    if(null!=rs.get("data")&&StringUtils.isNotBlank(rs.get("data").toString())){
+                        String data= CharSetUtil.decodeUnicode(rs.get("data").toString());
+                        rs.put("data",data);
+                    }
+                }catch (Exception e){
+                    rs.put("code",-1);
+                    rs.put("data",result.get("worker_message"));
+                }
+            }else{
+                rs.put("code",-1);
+                rs.put("data","elves unknow error");
+            }
+        }else{
+            rs.put("code",-1);
+            rs.put("data","elves unknow error");
+        }
 
+        OperateLog log =new OperateLog();
+        log.setIp(ip).setStartTime(DateUtil.formatDate(startTime)).setEndTime(DateUtil.formatDate(endTime))
+                .setCostTime((int)(endTime-startTime)).setParam(command)
+                .setResult(back==null?null:JSON.toJSONString(rs)).setOperateUser(userName);
+        bumblebeeDao.addOperateLog(log);
+        return rs;
+    }
+
+    @Override
+    public Map<String, Object> runShell(String email,String ip,String port){
+        Map<String, Object> rs =new HashMap<String, Object>();
+
+        if(StringUtils.isBlank(ip)){
+            rs.put("code",-1);
+            rs.put("data","ip is empty");
+            return rs;
+        }
+
+        if(!ValidateUtil.validateIpAddress(ip)){
+            rs.put("code",-1);
+            rs.put("data","ip format error");
+            return rs;
+        }
+
+        if(StringUtils.isBlank(port)||!ValidateUtil.validateNumber(port)){
+            rs.put("code",-1);
+            rs.put("data","port format error");
+            return rs;
+        }
+
+        if(StringUtils.isBlank(email)){
+            rs.put("code",-1);
+            rs.put("data","operator not find");
+            return rs;
+        }
+
+        //判断是否存在该用户
+        List<BumblebeeUser> users =bumblebeeDao.queryUser(email,null);
+        if(users==null||users.size()<=0){
+            rs.put("code",-1);
+            rs.put("data","operator not find");
+            return rs;
+        }
+        String userName = users.get(0).getUserName();
+
+        //判断该用户是否有操作该机器的权限(非系统用户判断)
+        if(users.get(0).getIsSystem()==0){
+            BumblebeeAgent agent =new BumblebeeAgent();
+            agent.setAgentIp(ip);
+            List<BumblebeeAgent> agents = bumblebeeDao.queryAgentByPermission(email,agent);
+            if(null==agents||agents.size()<=0){
+                rs.put("code",-1);
+                rs.put("data","no operation authority of this ip:"+ip);
+                return rs;
+            }
+        }
+
+
+        //封装参数
+        Map<String, Object> cmd =new HashMap<String, Object>();
+        cmd.put("email", email);
+        cmd.put("port", port);
+
+        Map<String, Object> params =new HashMap<String, Object>();
+        params.put("ip",ip.trim());
+        params.put("func","shell");
+        params.put("proxy","python|app-worker.py");
+        params.put("param",JSON.toJSONString(cmd));
+        params.put("timeout",60);
+        //调用elves运行 app脚本，回收结果（rt同步任务）
+
+        long startTime=System.currentTimeMillis();
+        Map<String,Object> back = ElvesUtil.createElvesJob(ElvesUtil.ELVES_API_JOB_RT_URI,params);
+        long endTime=System.currentTimeMillis();
+        LOG.info(userName +" run shell ip : "+ip+" and result : "+back);
         if(null!=back&&!"true".equals(back.get("flag"))){
             rs.put("code",-1);
             rs.put("data",back.get("error"));
@@ -183,7 +286,7 @@ public class TerminalServiceImpl implements TerminalService{
                 .setCostTime((int)(endTime-startTime)).setParam(JSON.toJSONString(cmd))
                 .setResult(back==null?null:JSON.toJSONString(rs)).setOperateUser(userName);
         bumblebeeDao.addOperateLog(log);
+
         return rs;
     }
-
 }

@@ -12,7 +12,7 @@
             AND agent_ip = #{agentIp}
         </if>
         <if test="agentName !=null and agentName !=''">
-            AND agent_name = #{agentName}
+            AND agent_name LIKE CONCAT('%', #{agentName}, '%')
         </if>
         <if test="asset !=null and asset !=''">
             AND asset = #{asset}
@@ -31,7 +31,7 @@
 
 
     <select id="queryAgentByPermission"  resultType="BumblebeeAgent">
-        SELECT `agent_ip`,`agent_name`,`asset`,`manager`,`main_name`,`sub_name` FROM `bumblebee_agent` WHERE main_name IN
+        SELECT `agent_ip`,`agent_name`,`asset`,`manager`,`main_name`,`sub_name`,`os` FROM `bumblebee_agent` WHERE main_name IN
         (
           SELECT p.`main_name` FROM `group_permission` p WHERE
           p.`group_id` =
@@ -41,7 +41,7 @@
             AND `agent_ip`= #{agent.agentIp}
         </if>
         <if test="agent.agentName !=null and agent.agentName !=''">
-            AND agent_name = #{agent.agentName}
+            AND agent_name LIKE CONCAT('%', #{agent.agentName}, '%')
         </if>
         <if test="agent.asset !=null and agent.asset !=''">
             AND asset = #{agent.asset}
@@ -138,8 +138,12 @@
         DELETE FROM bumblebee_group WHERE group_id=#{groupId}
     </delete>
 
-    <select id="queryLog" resultType="OperateLog">
-        SELECT * FROM operate_log ORDER BY start_time DESC
+    <select id="queryLog" resultType="OperateLog" parameterType="string">
+        SELECT * FROM operate_log WHERE 1=1
+        <if test="_parameter!=null and _parameter !=''">
+          AND `operate_user`=#{userName}
+        </if>
+        ORDER BY start_time DESC
     </select>
 
     <insert id="addOperateLog" parameterType="OperateLog">
@@ -214,4 +218,35 @@
         DELETE FROM group_permission WHERE `group_id`=#{groupId}
     </delete>
 
+    <delete id="delAllAgent">
+        DELETE FROM `bumblebee_agent`
+    </delete>
+
+    <insert id="addAgent" parameterType="BumblebeeAgent">
+        INSERT INTO `bumblebee_agent`
+        VALUES
+        (#{agentIp},#{agentName},#{asset},#{manager},#{mainName},#{subName},#{os},#{updateTime})
+    </insert>
+
+    <select id="queryConfig" resultType="BumblebeeConfig">
+        SELECT * FROM bumblebee_config LIMIT 1
+    </select>
+
+    <update id="updateConfig" parameterType="BumblebeeConfig">
+        UPDATE bumblebee_config
+        <trim prefix="set" suffixOverrides=",">
+            <if test="syncAgentUrl!=null">
+                `sync_agent_url`=#{syncAgentUrl},
+            </if>
+            <if test="clientVersion!=null">
+                `client_version`=#{clientVersion},
+            </if>
+            <if test="ignoreFlag!=null">
+                `ignore_flag`=#{ignoreFlag},
+            </if>
+            <if test="promptContent!=null">
+                `prompt_content`=#{promptContent},
+            </if>
+        </trim>
+    </update>
 </mapper>

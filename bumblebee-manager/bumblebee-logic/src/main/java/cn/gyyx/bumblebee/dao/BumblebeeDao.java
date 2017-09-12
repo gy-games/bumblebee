@@ -46,7 +46,7 @@ public interface BumblebeeDao {
 
     public int delGroup(int groupId);
 
-    public List<OperateLog> queryLog();
+    public List<OperateLog> queryLog(String userName);
 
     public List<CommandBlacklist> queryAllCommandBlacklist();
 
@@ -68,5 +68,14 @@ public interface BumblebeeDao {
     public int addOperateLog(OperateLog log);
 
     public int updateUserPwd(BumblebeeUser user);
+
     public int updateUserLoginTime(BumblebeeUser user);
+
+    public int delAllAgent();
+
+    public int addAgent(BumblebeeAgent agent);
+
+    public BumblebeeConfig queryConfig();
+
+    public int updateConfig(BumblebeeConfig config);
 }

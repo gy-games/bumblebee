@@ -34,13 +34,13 @@
                             <i class="fa fa-bar-chart"></i>操作日志
 						</a>
 					</li>
-                    <li>
-                        <a href="javascript:void(0);" onclick="loadContent('/web/view/agent')">
-                            <i class="fa fa-sitemap"></i>机器列表
-                        </a>
-                    </li>
-                    <c:if test="${sessionScope.curUser.isSystem==1}">
 
+                    <c:if test="${sessionScope.curUser.isSystem==1}">
+                        <li>
+                            <a href="javascript:void(0);" onclick="loadContent('/web/view/agent')">
+                                <i class="fa fa-sitemap"></i>机器列表
+                            </a>
+                        </li>
                         <li>
                             <a href="javascript:void(0);" onclick="loadContent('/web/view/blacklist')">
                                 <i class="fa fa-calendar"></i>指令黑名单
@@ -53,6 +53,9 @@
                                 </li>
                                 <li>
                                     <a href="javascript:void(0);" onclick="loadContent('/web/view/group')">用户组管理</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" onclick="loadContent('/web/view/config')">系统配置管理</a>
                                 </li>
                             </ul>
                         </li>

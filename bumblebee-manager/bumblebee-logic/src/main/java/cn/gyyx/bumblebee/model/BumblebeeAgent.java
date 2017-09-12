@@ -27,6 +27,12 @@ public class BumblebeeAgent implements Serializable{
     /* 二级分类 */
     private String subName;
 
+    /* 操作系统 */
+    private String os;
+
+    /* 更新时间 */
+    private String updateTime;
+
     public String getAgentIp() {
         return agentIp;
     }
@@ -81,4 +87,23 @@ public class BumblebeeAgent implements Serializable{
         return this;
     }
 
+
+    public String getOs() {
+        return os;
+    }
+
+    public BumblebeeAgent setOs(String os) {
+        this.os = os;
+        return this;
+    }
+
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public BumblebeeAgent setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+        return this;
+    }
 }

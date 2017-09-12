@@ -43,7 +43,6 @@
 
         <div class="right_col" style="min-height: 1000px;">
             <div class="cc" id="rightDiv">
-                <%@ include file="web/home.jsp" %>
             </div>
         </div>
         <footer>
@@ -95,6 +94,7 @@
                 NProgress.done();
             });
         }
+        loadContent(_ctx+"/web/home");
     });
 
     function loadContent(url) {
@@ -115,9 +115,6 @@
 
     function downClient(){
         window.open(_ctx+"/resources/client/bumblebee-client.zip");
-//        layer.alert('客户端正在开发中...', {
-//            icon : 6
-//        });
     }
 
     function showPwdDiv(){

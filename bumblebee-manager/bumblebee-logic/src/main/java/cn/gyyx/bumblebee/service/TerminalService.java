@@ -18,6 +18,8 @@ public interface TerminalService {
 
     public List<String> getSubNameList(String mainName);
 
-    public Map<String, Object> runCommand(String email,String ip,String command);
+    public Map<String, Object> runCommand(String email,String ip,String command,String func);
+
+    public Map<String, Object> runShell(String email,String ip,String port);
 
 }

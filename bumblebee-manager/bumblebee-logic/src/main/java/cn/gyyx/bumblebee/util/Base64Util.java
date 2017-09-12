@@ -2,8 +2,6 @@ package cn.gyyx.bumblebee.util;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * @Author : east.Fu
  * @Description : base64 加密解密工具类
@@ -15,7 +13,7 @@ public class Base64Util {
         byte[] b = null;
         String s = null;
         try {
-            b = Base64.encodeBase64(str.getBytes(),true);
+            b = Base64.encodeBase64(str.getBytes(),false);
             return new String(b);
         } catch (Exception e) {
             return null;

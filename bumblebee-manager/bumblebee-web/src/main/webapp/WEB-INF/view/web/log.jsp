@@ -49,11 +49,12 @@
             },{
                 "mDataProp" : "param",
                 "sDefaultContent":"",
-                "sTitle" : "参数"
+                "sTitle" : "参数",
             },{
-                "mDataProp" : "result",
+                "mDataProp" : "operateUser",
                 "sDefaultContent":"",
-                "sTitle" : "结果"
+                "sTitle" : "操作人",
+                "sWidth" : "5%"
             },{
                 "mDataProp" : "startTime",
                 "sDefaultContent":"",
@@ -70,10 +71,10 @@
                 "sTitle" : "耗时(ms)",
                 "sWidth" : "5%"
             },{
-                "mDataProp" : "operateUser",
+                "mDataProp" : "result",
                 "sDefaultContent":"",
-                "sTitle" : "操作人",
-                "sWidth" : "5%"
+                "sTitle" : "结果",
+                "sWidth" : "15%"
             }],
             "bSort": false,
             "bProcessing": true,

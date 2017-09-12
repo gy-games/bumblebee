@@ -4,7 +4,7 @@
 
     <groupId>cn.gyyx.bumblebee</groupId>
     <artifactId>bumblebee-manager</artifactId>
-    <version>0.0.1</version>
+    <version>0.1</version>
     <packaging>pom</packaging>
 
     <name>bumblebee-manager</name>
@@ -118,29 +118,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.21</version>
-        </dependency>
-
-        <!-- curator zookeeper -->
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-framework</artifactId>
-            <version>2.4.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-client</artifactId>
-            <version>2.4.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
-            <version>2.4.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.10</version>
         </dependency>
 
         <dependency>

@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public interface BumblebeeService {
 
+    public BumblebeeUser queryUser(String email);
+
     public BumblebeeUser login(String email,String pwd);
 
     public List<BumblebeeUser> queryAllUser();
@@ -32,7 +34,7 @@ public interface BumblebeeService {
 
     public List<BumblebeeGroup> queryAllGroup();
 
-    public List<OperateLog> queryLog();
+    public List<OperateLog> queryLog(BumblebeeUser user);
 
     //blacklist 相关
     public List<CommandBlacklist> queryCommandBlacklist();
@@ -43,5 +45,11 @@ public interface BumblebeeService {
 
     public List<String> getMainNameList();
 
-    public boolean  updatePwd(BumblebeeUser user);
+    public boolean updatePwd(BumblebeeUser user);
+
+    public boolean syncAgentData();
+
+    public BumblebeeConfig queryConfig();
+
+    public boolean updateConfig(String property,String value);
 }

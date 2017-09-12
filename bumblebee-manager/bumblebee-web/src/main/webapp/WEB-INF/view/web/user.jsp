@@ -182,7 +182,7 @@
                     layer.alert('操作成功！', {
                         icon : 6
                     });
-                    //$('#userDialog').modal('hide');
+                    $('#userDialog').modal('hide');
                     reflushDatable("user-datatable");
                 }else{
                     layer.alert(data.msg, {
@@ -213,7 +213,7 @@
                         layer.alert('操作成功！', {
                             icon : 6
                         });
-                        //$('#userDialog').modal('hide');
+                        $('#userDialog').modal('hide');
                         reflushDatable("user-datatable");
                     }else{
                         layer.alert(data, {
@@ -235,7 +235,9 @@
         flushGroupList();
         $("#userId").val("");
         $("#userName").val("");
+        $('#userName').attr("readonly",false);
         $("#email").val("");
+        $('#email').attr("readonly",false);
         $("#myModalLabel2").html("新增用户");
         $('#userDialog').modal('toggle');
     }
@@ -244,7 +246,9 @@
         flushGroupList(obj.groupId);
         $("#userId").val(obj.userId);
         $("#userName").val(obj.userName);
+        $("#userName").attr("readonly",true);
         $("#email").val(obj.email);
+        $("#email").attr("readonly",true);
         $("#myModalLabel2").html("编辑用户");
         $('#userDialog').modal('toggle');
     }

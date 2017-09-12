@@ -14,11 +14,9 @@
                 <button class="btn btn-info pull-left" onclick="reflushDatable('agent-datatable')">
                     <i class="fa fa-repeat"></i> 刷新
                 </button>
-                <!--
                 <button class="btn btn-success pull-left" onclick="syncAgent()">
                     <i class="fa fa-repeat"></i> 同步机器列表
                 </button>
-                -->
                 <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -69,6 +67,14 @@
                 "mDataProp" : "subName",
                 "sDefaultContent":"",
                 "sTitle" : "二级分类",
+            },{
+                "mDataProp" : "os",
+                "sDefaultContent":"",
+                "sTitle" : "操作系统",
+            },{
+                "mDataProp" : "updateTime",
+                "sDefaultContent":"",
+                "sTitle" : "更新时间"
             }],
             "bProcessing": true,
             "processing" : true,
@@ -97,10 +103,34 @@
     });
 
     function syncAgent(){
-        layer.alert('开发中...', {
-            icon : 6
+        layer.confirm('确定要同步机器列表么？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var index = layer.load(2, {shade: false});
+            $.ajax({
+                url: _ctx+"/web/agent/syncAgentData",
+                type:'post',
+                success:function(data){
+                    layer.close(index);
+                    if(data=="success"){
+                        layer.alert('操作成功！', {
+                            icon : 6
+                        });
+                        reflushDatable('agent-datatable')
+                    }else{
+                        layer.alert('操作失败：请联系管理员！', {
+                            icon : 6
+                        });
+                    }
+                },
+                error:function(){
+                    layer.close(index);
+                    layer.alert('操作失败：请联系管理员！', {
+                        icon : 6
+                    });
+                }
+            });
         });
-        return;
     }
 </script>
 

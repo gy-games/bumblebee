@@ -1,6 +1,11 @@
 package cn.gyyx.bumblebee.filter;
 
+import cn.gyyx.bumblebee.model.BumblebeeUser;
+import cn.gyyx.bumblebee.service.BumblebeeService;
+import cn.gyyx.bumblebee.service.impl.BumblebeeServiceImpl;
 import cn.gyyx.bumblebee.util.Md5Util;
+import cn.gyyx.bumblebee.util.SpringContextUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,7 +28,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private String basePath;
 
-
     @Override
     protected void initFilterBean() throws ServletException {
         super.initFilterBean();
@@ -32,7 +36,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI().replaceAll("/+", "/");
-        LOG.debug("SecurityFilter receive request uri : " + requestURI);
+        LOG.info("SecurityFilter receive request uri : " + requestURI);
         if(!validateSign(request)){
             java.io.PrintWriter out = response.getWriter();
             out.println("");
@@ -44,6 +48,20 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private boolean validateSign(HttpServletRequest request){
         String sign = request.getParameter("sign");
+        String email = request.getParameter("email");
+        if(StringUtils.isBlank(sign)||StringUtils.isBlank(email)){
+            return false;
+        }
+
+        //find user
+        BumblebeeService bumblebeeService= SpringContextUtil.getBean(BumblebeeServiceImpl.class);
+        BumblebeeUser user =bumblebeeService.queryUser(email);
+        if(user==null){
+            return false;
+        }
+        //制作md5
+        String signKey=user.getPwd();
+
         StringBuffer sortUri = new StringBuffer();
         Map<String, String[]> params = request.getParameterMap();
         Set<String> keys = params.keySet();
@@ -60,12 +78,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(list!=null&&list.size()>0){
             sortUri.deleteCharAt(sortUri.length() - 1);
         }
-        String signFinal = Md5Util.MD5(sortUri.toString().trim());
+        String signFinal = Md5Util.MD5(sortUri.toString().trim()+signKey);
 
-        LOG.debug("final sign str :" + sortUri + ",signFinal:" + signFinal + ",sign:" + sign);
+        LOG.info("final sign str :" + sortUri + ",signFinal:" + signFinal + ",sign:" + sign);
         // 验签成功
         if (sign.equalsIgnoreCase(signFinal)) {
-            LOG.debug("Sign Validate success !");
+            LOG.info("Sign Validate success !");
             return true;
         }
         return false;

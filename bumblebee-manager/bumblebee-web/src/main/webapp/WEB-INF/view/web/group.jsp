@@ -78,30 +78,35 @@
                 "mDataProp" : "groupId",
                 "sDefaultContent":"",
                 "sTitle" : "序号",
+                "sWidth" : "4%"
             },{
                 "mDataProp" : "groupName",
                 "sDefaultContent":"",
                 "sTitle" : "组名",
+                "sWidth" : "15%"
             },{
                 "mDataProp" : "createTime",
                 "sDefaultContent":"",
                 "sTitle" : "创建时间",
+                "sWidth" : "15%"
             },{
                 "mDataProp" : "createUser",
                 "sDefaultContent":"",
                 "sTitle" : "创建人",
+                "sWidth" : "15%"
             },{
                 "mDataProp" : "desc",
                 "sDefaultContent":"",
-                "sTitle" : "描述",
+                "sTitle" : "描述"
             },{
                 "mDataProp" : "groupId",
                 "sDefaultContent":"",
                 "sTitle" : "操作",
                 "mRender": function ( data, type,row, full ) {
-                    return "<a href='javascript:void(0);' class='btn btn-info btn-xs' onclick='editPermission("+JSON.stringify(row)+")'><i class='fa fa-pencil'></i> 编辑用户组</a>"
-                        +"<a href='javascript:void(0);' class='btn btn-danger btn-xs' onclick='del("+data+")')><i class='fa fa-trash-o'></i> 删除</a>";
-                }
+            return "<a href='javascript:void(0);' class='btn btn-info btn-xs' onclick='editPermission("+JSON.stringify(row)+")'><i class='fa fa-pencil'></i> 编辑用户组</a>"
+                +"<a href='javascript:void(0);' class='btn btn-danger btn-xs' onclick='del("+data+")')><i class='fa fa-trash-o'></i> 删除</a>";
+        },
+                "sWidth" : "15%"
             }],
             "bProcessing": true,
             "processing" : true,
@@ -166,6 +171,7 @@
                     layer.alert('操作成功！', {
                         icon : 6
                     });
+                    $('#groupDialog').modal('hide');
                     reflushDatable("group-datatable");
                 }else{
                     layer.alert(data.msg, {
@@ -194,6 +200,7 @@
                         layer.alert('操作成功！', {
                             icon : 6
                         });
+                        $('#groupDialog').modal('hide');
                         reflushDatable("group-datatable");
                     }else{
                         layer.alert('操作失败：请联系管理员！', {

@@ -4,8 +4,12 @@ import cn.gyyx.bumblebee.dao.BumblebeeDao;
 import cn.gyyx.bumblebee.model.*;
 import cn.gyyx.bumblebee.service.BumblebeeService;
 import cn.gyyx.bumblebee.util.DateUtil;
+import cn.gyyx.bumblebee.util.HttpUtil;
 import cn.gyyx.bumblebee.util.Md5Util;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +27,19 @@ import java.util.Map;
 @Service
 public class BumblebeeServiceImpl implements BumblebeeService{
 
+    private static final Logger LOG=Logger.getLogger(BumblebeeServiceImpl.class);
+
     @Autowired
     private BumblebeeDao bumblebeeDao;
+
+    @Override
+    public BumblebeeUser queryUser(String email){
+        List<BumblebeeUser> users =bumblebeeDao.queryUser(email,null);
+        if(users!=null&&users.size()==1){
+            return users.get(0);
+        }
+        return null;
+    }
 
     @Override
     public BumblebeeUser login(String email, String pwd) {
@@ -235,8 +250,11 @@ public class BumblebeeServiceImpl implements BumblebeeService{
     }
 
     @Override
-    public List<OperateLog> queryLog() {
-        return bumblebeeDao.queryLog();
+    public List<OperateLog> queryLog(BumblebeeUser user) {
+        if(user.getIsSystem()==1){
+            return bumblebeeDao.queryLog(null);
+        }
+        return bumblebeeDao.queryLog(user.getUserName());
     }
 
 
@@ -294,4 +312,72 @@ public class BumblebeeServiceImpl implements BumblebeeService{
         return true;
     }
 
+    @Override
+    @Transactional(readOnly = false,rollbackFor = Exception.class)
+    public boolean syncAgentData(){
+        String syncUrl=null;
+
+        BumblebeeConfig config =bumblebeeDao.queryConfig();
+        if(config!=null){
+            syncUrl=config.getSyncAgentUrl();
+        }
+
+        if(StringUtils.isNotBlank(syncUrl)){
+            String result= HttpUtil.sendGet(syncUrl,null);
+            if(StringUtils.isNotBlank(result)){
+                Map<String,String> rs = JSON.parseObject(result,new TypeReference<Map<String,String>>(){});
+                List<Map<String,String>> dt =JSON.parseObject(rs.get("data"),new TypeReference<List<Map<String,String>>>(){});
+                //删除所有的agent
+                bumblebeeDao.delAllAgent();
+                //添加agent
+                String updateTime=DateUtil.currentTimestamp2String(null);
+                for(Map<String,String> m:dt){
+                    String ip=m.get("agent_ip")==null?"":m.get("agent_ip");
+                    String mainName=m.get("main_name")==null?"":m.get("main_name");
+                    if(StringUtils.isBlank(ip)||StringUtils.isBlank(mainName)){
+                        //ip和一级分类必须有
+                        continue;
+                    }
+                    String asset=m.get("asset")==null?"":m.get("asset");
+                    String agentName=m.get("agent_name")==null?"":m.get("agent_name");
+                    String manager=m.get("manager")==null?"":m.get("manager");
+                    String subName=m.get("sub_name")==null?"":m.get("sub_name");
+                    String os=m.get("os")==null?"":m.get("os");
+                    BumblebeeAgent agent =new BumblebeeAgent();
+                    agent.setAgentIp(ip).setMainName(mainName).setAgentName(agentName)
+                            .setAsset(asset).setManager(manager).setSubName(subName)
+                            .setOs(os).setUpdateTime(updateTime);
+                    bumblebeeDao.addAgent(agent);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public BumblebeeConfig queryConfig(){
+        return bumblebeeDao.queryConfig();
+    }
+
+    @Override
+    public boolean updateConfig(String property,String value){
+        if(StringUtils.isEmpty(property)){
+            return false;
+        }
+        BumblebeeConfig config =new BumblebeeConfig();
+        if("syncAgentUrl".equals(property)){
+            config.setSyncAgentUrl(value);
+        }else if("clientVersion".equals(property)){
+            config.setClientVersion(value);
+        }else if("ignoreFlag".equals(property)){
+            config.setIgnoreFlag(value);
+        }else if("promptContent".equals(property)){
+            config.setPromptContent(value);
+        }else{
+            return false;
+        }
+        bumblebeeDao.updateConfig(config);
+        return true;
+    }
 }

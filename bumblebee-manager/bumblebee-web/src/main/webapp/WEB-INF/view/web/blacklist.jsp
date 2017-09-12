@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="groupDialog">
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="blacklistDialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -127,6 +127,7 @@
                     layer.alert('操作成功！', {
                         icon : 6
                     });
+                    $('#blacklistDialog').modal('hide');
                     reflushDatable("blacklist-datatable");
                 }else{
                     layer.alert(data.msg, {
@@ -155,6 +156,7 @@
                         layer.alert('操作成功！', {
                             icon : 6
                         });
+                        $('#blacklistDialog').modal('hide');
                         reflushDatable("blacklist-datatable");
                     }else{
                         layer.alert('操作失败：请联系管理员！', {
@@ -174,7 +176,7 @@
 
     function showAddDialog(){
         $("#command").val("");
-        $('#groupDialog').modal('toggle');
+        $('#blacklistDialog').modal('toggle');
     }
 
 </script>

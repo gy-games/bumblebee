@@ -6,11 +6,11 @@
     <parent>
         <groupId>cn.gyyx.bumblebee</groupId>
         <artifactId>bumblebee-manager</artifactId>
-        <version>0.0.1</version>
+        <version>0.1</version>
     </parent>
 
     <artifactId>bumblebee-logic</artifactId>
-    <version>0.0.1</version>
+    <version>0.1</version>
     <packaging>jar</packaging>
 
     <name>bumblebee-logic</name>

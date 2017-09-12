@@ -1,5 +1,6 @@
 package cn.gyyx.bumblebee.controller;
 
+import cn.gyyx.bumblebee.filter.JsonFilter;
 import cn.gyyx.bumblebee.model.BumblebeeAgent;
 import cn.gyyx.bumblebee.model.BumblebeeUser;
 import cn.gyyx.bumblebee.service.BumblebeeService;
@@ -28,6 +29,9 @@ public class CommandController {
     @Autowired
     private TerminalService terminalServiceImpl;
 
+    @Autowired
+    private BumblebeeService bumblebeeServiceImpl;
+
     @RequestMapping("/agentList")
     @ResponseBody
     public String agentList(HttpServletRequest request, BumblebeeAgent agent){
@@ -35,7 +39,7 @@ public class CommandController {
         List<BumblebeeAgent> list=terminalServiceImpl.queryAgent(email,agent);
         Map<String,Object> data = new HashMap<String,Object>();
         data.put("data",list==null?new ArrayList<BumblebeeAgent>():list);
-        return JSON.toJSONString(data);
+        return JSON.toJSONString(data, JsonFilter.filter);
     }
 
     @RequestMapping("/runCommand")
@@ -43,7 +47,7 @@ public class CommandController {
     public String runCommand(HttpServletRequest request,String ip,String command){
         //返回结果格式： {'code':0,'data':''}}
         String email =((BumblebeeUser)request.getSession().getAttribute("curUser")).getEmail();
-        Map<String,Object> result =terminalServiceImpl.runCommand(email,ip,command);
+        Map<String,Object> result =terminalServiceImpl.runCommand(email,ip,command,"excute");
         return JSON.toJSONString(result);
     }
 

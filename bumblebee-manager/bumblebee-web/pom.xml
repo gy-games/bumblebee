@@ -7,12 +7,12 @@
     <parent>
         <groupId>cn.gyyx.bumblebee</groupId>
         <artifactId>bumblebee-manager</artifactId>
-        <version>0.0.1</version>
+        <version>0.1</version>
     </parent>
 
     <groupId>cn.gyyx.bumblebee</groupId>
     <artifactId>bumblebee-web</artifactId>
-    <version>0.0.1</version>
+    <version>0.1</version>
     <packaging>war</packaging>
     <name>bumblebee-web</name>
 
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>cn.gyyx.bumblebee</groupId>
             <artifactId>bumblebee-logic</artifactId>
-            <version>0.0.1</version>
+            <version>0.1</version>
         </dependency>
     </dependencies>
     <build>

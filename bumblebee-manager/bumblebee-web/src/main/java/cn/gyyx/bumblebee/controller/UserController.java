@@ -1,5 +1,6 @@
 package cn.gyyx.bumblebee.controller;
 
+import cn.gyyx.bumblebee.filter.JsonFilter;
 import cn.gyyx.bumblebee.model.BumblebeeUser;
 import cn.gyyx.bumblebee.service.BumblebeeService;
 import com.alibaba.fastjson.JSON;
@@ -31,7 +32,7 @@ public class UserController {
         List<BumblebeeUser> list = bumblebeeServiceImpl.queryAllUser();
         Map<String,Object> data = new HashMap<String,Object>();
         data.put("data",list);
-        return JSON.toJSONString(data);
+        return JSON.toJSONString(data, JsonFilter.filter);
     }
 
     @RequestMapping("/add")

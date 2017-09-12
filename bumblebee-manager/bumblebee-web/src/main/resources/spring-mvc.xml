@@ -11,7 +11,9 @@
 	<context:component-scan base-package="cn.gyyx" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
-	
+
+    <bean id="springContextUtil" class="cn.gyyx.bumblebee.util.SpringContextUtil"></bean>
+
     <!-- REST中根据URL后缀自动判定Content-Type及相应的View -->
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
 	    <property name="mediaTypes" >
