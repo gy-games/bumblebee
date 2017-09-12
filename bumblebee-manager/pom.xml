@@ -4,7 +4,7 @@
 
     <groupId>cn.gyyx.bumblebee</groupId>
     <artifactId>bumblebee-manager</artifactId>
-    <version>0.1</version>
+    <version>0.0.6</version>
     <packaging>pom</packaging>
 
     <name>bumblebee-manager</name>
