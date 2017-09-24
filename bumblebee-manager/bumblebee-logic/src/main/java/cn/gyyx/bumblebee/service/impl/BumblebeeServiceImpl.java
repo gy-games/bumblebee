@@ -254,10 +254,9 @@ public class BumblebeeServiceImpl implements BumblebeeService{
 
         Pagination<OperateLog> back =new Pagination<OperateLog>();
 
-        int startPage=tableModelVO1.getStart();
+        int startIndex=tableModelVO1.getStart();
         int length=tableModelVO1.getLength();
 
-        int startIndex=startPage*length;
         int count=0;
         List<OperateLog> logs =new ArrayList<OperateLog>();
         if(user.getIsSystem()==1){

@@ -148,11 +148,11 @@
 
     <select id="queryLogForPage" resultType="OperateLog">
         SELECT * FROM operate_log WHERE 1=1
-        <if test="_parameter!=null and _parameter !=''">
-          AND `operate_user`=#{0}
+        <if test="userName!=null and userName !=''">
+          AND `operate_user`=#{userName}
         </if>
         ORDER BY start_time DESC
-        LIMIT #{1},#{2}
+        LIMIT #{startIndex},#{length}
     </select>
 
     <select id="queryLogCount" resultType="int" parameterType="string">
