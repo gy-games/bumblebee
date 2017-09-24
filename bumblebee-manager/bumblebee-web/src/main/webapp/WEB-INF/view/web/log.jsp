@@ -34,7 +34,11 @@
     $(function(){
         $('#log-datatable').DataTable({
             "bServerSide" : true, //是否启动服务器端数据导入("前端分页/后端分页")
-            "sAjaxSource" : _ctx+"/web/log/data",
+//            "sAjaxSource" : _ctx+"/web/log/data",
+            "ajax" : {
+                "url":_ctx+"/web/log/data",
+                "type":"post"
+            },
             'bStateSave': true,
             'pageLength':10,
             "aoColumns" : [{

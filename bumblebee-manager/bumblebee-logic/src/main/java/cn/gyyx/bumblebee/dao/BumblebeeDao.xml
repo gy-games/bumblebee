@@ -146,6 +146,15 @@
         ORDER BY start_time DESC
     </select>
 
+    <select id="queryLogForPage" resultType="OperateLog">
+        SELECT * FROM operate_log WHERE 1=1
+        <if test="_parameter!=null and _parameter !=''">
+          AND `operate_user`=#{0}
+        </if>
+        ORDER BY start_time DESC
+        LIMIT #{1},#{2}
+    </select>
+
     <select id="queryLogCount" resultType="int" parameterType="string">
         SELECT count(1) FROM operate_log WHERE 1=1
         <if test="_parameter!=null and _parameter !=''">
