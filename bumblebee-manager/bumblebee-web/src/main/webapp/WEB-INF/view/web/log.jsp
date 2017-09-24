@@ -33,9 +33,10 @@
 <script type="text/javascript">
     $(function(){
         $('#log-datatable').DataTable({
-            "bServerSide" : false, //是否启动服务器端数据导入("前端分页/后端分页")
+            "bServerSide" : true, //是否启动服务器端数据导入("前端分页/后端分页")
             "sAjaxSource" : _ctx+"/web/log/data",
             'bStateSave': true,
+            'pageLength':10,
             "aoColumns" : [{
                 "mDataProp" : "logId",
                 "sDefaultContent":"",

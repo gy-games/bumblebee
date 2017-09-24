@@ -3,6 +3,8 @@ package cn.gyyx.bumblebee.controller;
 import cn.gyyx.bumblebee.filter.JsonFilter;
 import cn.gyyx.bumblebee.model.BumblebeeUser;
 import cn.gyyx.bumblebee.model.OperateLog;
+import cn.gyyx.bumblebee.model.Pagination;
+import cn.gyyx.bumblebee.model.TableModelVO;
 import cn.gyyx.bumblebee.service.BumblebeeService;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Author : east.Fu
@@ -30,13 +29,11 @@ public class LogController {
 
     @RequestMapping("/data")
     @ResponseBody
-    public String data(HttpServletRequest request){
+    public String data(TableModelVO tableModelVO1,HttpServletRequest request){
         HttpSession session = request.getSession();
         BumblebeeUser user=(BumblebeeUser) request.getSession().getAttribute("curUser");
-        List<OperateLog> list = bumblebeeServiceImpl.queryLog(user);
-        Map<String,Object> data = new HashMap<String,Object>();
-        data.put("data",list);
-        return JSON.toJSONString(data, JsonFilter.filter);
+        Pagination<OperateLog> list = bumblebeeServiceImpl.queryLogForPage(tableModelVO1,user);
+        return JSON.toJSONString(list, JsonFilter.filter);
     }
 
 }

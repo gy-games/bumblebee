@@ -250,11 +250,13 @@ public class BumblebeeServiceImpl implements BumblebeeService{
     }
 
     @Override
-    public List<OperateLog> queryLog(BumblebeeUser user) {
-        if(user.getIsSystem()==1){
-            return bumblebeeDao.queryLog(null);
-        }
-        return bumblebeeDao.queryLog(user.getUserName());
+    public Pagination<OperateLog> queryLogForPage(TableModelVO tableModelVO1,BumblebeeUser user) {
+//        if(user.getIsSystem()==1){
+//            return bumblebeeDao.queryLog(null);
+////        }
+//        return bumblebeeDao.queryLog(user.getUserName());
+
+        return null;
     }
 
 

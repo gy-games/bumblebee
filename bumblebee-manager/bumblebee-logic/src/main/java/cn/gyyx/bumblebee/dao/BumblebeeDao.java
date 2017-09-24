@@ -48,6 +48,8 @@ public interface BumblebeeDao {
 
     public List<OperateLog> queryLog(String userName);
 
+    public List<OperateLog> queryLogCount(String userName);
+
     public List<CommandBlacklist> queryAllCommandBlacklist();
 
     public int addBlacklist(String command);

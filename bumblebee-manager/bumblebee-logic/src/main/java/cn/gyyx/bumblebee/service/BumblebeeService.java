@@ -34,7 +34,7 @@ public interface BumblebeeService {
 
     public List<BumblebeeGroup> queryAllGroup();
 
-    public List<OperateLog> queryLog(BumblebeeUser user);
+    public Pagination<OperateLog> queryLogForPage(TableModelVO tableModelVO1,BumblebeeUser user);
 
     //blacklist 相关
     public List<CommandBlacklist> queryCommandBlacklist();
