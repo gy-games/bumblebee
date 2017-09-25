@@ -48,9 +48,9 @@ public interface BumblebeeDao {
 
     public List<OperateLog> queryLog(String userName);
 
-    public List<OperateLog> queryLogForPage(@Param("userName") String userName,@Param("startIndex")int startIndex,@Param("length")int length);
+    public List<OperateLog> queryLogForPage(@Param("userName") String userName,@Param("search")String search,@Param("startIndex")int startIndex,@Param("length")int length);
 
-    public int queryLogCount(String userName);
+    public int queryLogCount(@Param("userName")String userName,@Param("search")String search);
 
     public List<CommandBlacklist> queryAllCommandBlacklist();
 

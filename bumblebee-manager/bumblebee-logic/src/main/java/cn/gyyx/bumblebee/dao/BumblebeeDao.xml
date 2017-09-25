@@ -147,20 +147,36 @@
     </select>
 
     <select id="queryLogForPage" resultType="OperateLog">
-        SELECT * FROM operate_log WHERE 1=1
+        SELECT operate.* FROM
+            (
+            SELECT *,CONCAT(ip,param,result,start_time,end_time,cost_time,operate_user) AS `search`
+            FROM operate_log
+            ) operate
+        WHERE 1=1
         <if test="userName!=null and userName !=''">
-          AND `operate_user`=#{userName}
+            AND operate.`operate_user`=#{userName}
         </if>
-        ORDER BY start_time DESC
+        <if test="search!=null and search !=''">
+            AND operate.`search` LIKE "%${search}%"
+        </if>
+        ORDER BY operate.`start_time` DESC
         LIMIT #{startIndex},#{length}
     </select>
 
-    <select id="queryLogCount" resultType="int" parameterType="string">
-        SELECT count(1) FROM operate_log WHERE 1=1
-        <if test="_parameter!=null and _parameter !=''">
-          AND `operate_user`=#{userName}
+    <select id="queryLogCount" resultType="int">
+        SELECT COUNT(1) FROM
+            (
+                SELECT *,CONCAT(ip,param,result,start_time,end_time,cost_time,operate_user) AS `search`
+                FROM operate_log
+            ) operate
+        WHERE 1=1
+        <if test="userName!=null and userName !=''">
+          AND operate.`operate_user`=#{userName}
         </if>
-        ORDER BY start_time DESC
+        <if test="search!=null and search !=''">
+            AND operate.`search` LIKE "%${search}%"
+        </if>
+        ORDER BY operate.`start_time` DESC
     </select>
 
     <insert id="addOperateLog" parameterType="OperateLog">

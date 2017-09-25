@@ -251,9 +251,6 @@ public class BumblebeeServiceImpl implements BumblebeeService{
 
     @Override
     public Pagination<OperateLog> queryLogForPage(TableModelVO tableModelVO1,BumblebeeUser user) {
-
-        Pagination<OperateLog> back =new Pagination<OperateLog>();
-
         int startIndex=tableModelVO1.getStart();
         int length=tableModelVO1.getLength();
 
@@ -266,8 +263,8 @@ public class BumblebeeServiceImpl implements BumblebeeService{
             count=bumblebeeDao.queryLogCount(user.getUserName());
             logs = bumblebeeDao.queryLogForPage(user.getUserName(),startIndex,length);
         }
-        back.setData(logs).setDraw(tableModelVO1.getDraw())
-            .setRecordsTotal(count).setRecordsFiltered(count);
+        Pagination<OperateLog> back =new Pagination<OperateLog>();
+        back.setData(logs).setDraw(tableModelVO1.getDraw()).setRecordsTotal(count).setRecordsFiltered(count);
         return back;
     }
 

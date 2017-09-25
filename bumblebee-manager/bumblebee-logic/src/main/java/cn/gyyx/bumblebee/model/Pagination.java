@@ -41,5 +41,4 @@ public class Pagination<T> {
         this.data = data;
         return this;
     }
-
 }
