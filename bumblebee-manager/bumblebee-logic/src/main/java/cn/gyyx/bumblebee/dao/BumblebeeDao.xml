@@ -149,7 +149,7 @@
     <select id="queryLogForPage" resultType="OperateLog">
         SELECT operate.* FROM
             (
-            SELECT *,CONCAT(ip,param,result,start_time,end_time,cost_time,operate_user) AS `search`
+        SELECT *,CONCAT(ip,"_",param,"_",result,"_",start_time,"_",end_time,"_",cost_time,"_",operate_user) AS `search`
             FROM operate_log
             ) operate
         WHERE 1=1
@@ -166,7 +166,7 @@
     <select id="queryLogCount" resultType="int">
         SELECT COUNT(1) FROM
             (
-                SELECT *,CONCAT(ip,param,result,start_time,end_time,cost_time,operate_user) AS `search`
+                SELECT *,CONCAT(ip,"_",param,"_",result,"_",start_time,"_",end_time,"_",cost_time,"_",operate_user) AS `search`
                 FROM operate_log
             ) operate
         WHERE 1=1

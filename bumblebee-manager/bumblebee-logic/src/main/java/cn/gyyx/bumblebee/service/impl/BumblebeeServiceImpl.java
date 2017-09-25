@@ -253,15 +253,16 @@ public class BumblebeeServiceImpl implements BumblebeeService{
     public Pagination<OperateLog> queryLogForPage(TableModelVO tableModelVO1,BumblebeeUser user) {
         int startIndex=tableModelVO1.getStart();
         int length=tableModelVO1.getLength();
+        String search=tableModelVO1.getSearch().get("value");
 
         int count=0;
         List<OperateLog> logs =new ArrayList<OperateLog>();
         if(user.getIsSystem()==1){
-            count=bumblebeeDao.queryLogCount(null);
-            logs = bumblebeeDao.queryLogForPage(null,startIndex,length);
+            count=bumblebeeDao.queryLogCount(null,search);
+            logs = bumblebeeDao.queryLogForPage(null,search,startIndex,length);
         }else{
-            count=bumblebeeDao.queryLogCount(user.getUserName());
-            logs = bumblebeeDao.queryLogForPage(user.getUserName(),startIndex,length);
+            count=bumblebeeDao.queryLogCount(user.getUserName(),search);
+            logs = bumblebeeDao.queryLogForPage(user.getUserName(),search,startIndex,length);
         }
         Pagination<OperateLog> back =new Pagination<OperateLog>();
         back.setData(logs).setDraw(tableModelVO1.getDraw()).setRecordsTotal(count).setRecordsFiltered(count);
