@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.gyyx.bumblebee</groupId>
         <artifactId>bumblebee-manager</artifactId>
-        <version>0.0.6</version>
+        <version>0.0.7</version>
     </parent>
 
     <artifactId>bumblebee-logic</artifactId>

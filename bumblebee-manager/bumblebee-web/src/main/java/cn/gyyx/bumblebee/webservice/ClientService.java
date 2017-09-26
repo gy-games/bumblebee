@@ -85,7 +85,6 @@ public class ClientService {
     @RequestMapping("/runCommand")
     @ResponseBody
     public String runCommand(String email,String ip,String command){
-        ip="10.15.21.1";
         //返回结果格式： {'code':0,'data':''}}
         Map<String,Object> result =terminalServiceImpl.runCommand(email,ip,command,"excute");
         return JSON.toJSONString(result);
